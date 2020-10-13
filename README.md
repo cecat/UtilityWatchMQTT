@@ -9,15 +9,15 @@ The code is still here to use Particle's Webhooks to graph things at Thingspeak.
 There are some tips for setting up webhooks/thingspeak in the 
 [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) README file.
 
-## Stuff from Particle Workbench ##
+## Contents
 
-Note if you just take src/UtilWatch2020.ino and paste that code into the Particle web IDE you just need to manually add the libraries and it should be good to go.  Unless you intend to use git to track your code that's the most straighforward route.
-
-**lib/** - libraries used
+If you just take src/UtilWatch2020.ino and paste that code into the Particle's web IDE you
+just need to manually add the libraries (MQTT, OneWire, DS18B20) and it should be good to go.
+Unless you intend to use git to track your code that's the most straighforward route. 
 
 **src/** - code
 
-## Other Stuff ##
+**project.properties** - version numbers of the libraries at last update
 
 **DEV/** - device info - what hardware I use for the different sensors.
 
