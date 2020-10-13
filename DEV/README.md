@@ -18,11 +18,22 @@ between VCC and DATA, though some claim this is [unnecessary](https://wp.josh.co
 
 ### Sump Pump
 
-When I first implemented this system I used an accelerometer on the sump discharge pipe, sampling it at like 16x/second and looking for motion, which was fun.  But now I use a Hall Effect current sensor - I found a nice one from [ModernDevice](https://moderndevice.com/product/current-sensor/) that zip-ties to the power cord. 
+When I first implemented this system I used an accelerometer on the sump discharge pipe,
+sampling it at like 16x/second and looking for motion, which was fun.  But now I use
+a Hall Effect current sensor - I found a nice one from
+[ModernDevice](https://moderndevice.com/product/current-sensor/) that zip-ties to the power cord. 
+An advantage to the vibration-based sensor is that if you have a battery backup pump the sensor
+will detect that one as well as the main.  This is how I figured out once that my main had
+failed (it was running more frequently than normal since the battery backup was smaller).
+I don't have a battery backup hooked up at the moment.  But I do track how many times the
+sump runs, and for my situation I have figured out that I should be worried when the sump
+runs more than about 7 times in 30 minutes, thus I track that and send it to HA where I have
+an automation that texts me when the sump is running that often. And, well, you could also monitor
+your battery backup with a second current sensor.
 
-The advantage to the vibration-based sensor is that if you have a battery backup pump the sensor will detect that one as well as the main.  This is how I figured out once that my main had failed (it was running more frequently than normal since the battery backup was smaller).  I don't have a battery backup hooked up at the moment.  But I do track how many times the sump runs, and for my situation I have figured out that I should be worried when the sump runs more than about 7 times in 30 minutes, thus I track that and send it to HA where I have an automation that texts me when the sump is running that often.
-
-At some point it would be nice to add some logic to determine that the sump is out (vs. just inactive because it's not needed), such as watching the frequency and detecting that it suddenly goes from running a lot to not running.
+At some point it would be nice to add some logic to determine that the sump is out
+(vs. just inactive because it's not needed), such as watching the frequency and
+detecting that it suddenly goes from running a lot to not running.
 
 ### HVAC Fan
 
@@ -44,3 +55,9 @@ You can see in the src/UtilWatch2020.ino code that I have the sensor data pins c
 #define hvacPin     A0                      // pin for HVAC fan current sensor
 #define sumpPin     A1                      // pin for sump pump current sensor
 ```
+
+The Photon has VCC and GND pins so I use these.  Some people use digital pins for
+VCC and GND for their sensors (setting them to HIGH and LOW for VCC and GND, respectively).
+One advvantag to that is if you want to sswitch polarity, such as with a soil moisture sensor,
+or if you want to turn things on or off.  In this project we don't need to do these things,
+so the standard issue VCC and GND pins work fine.
