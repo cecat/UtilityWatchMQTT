@@ -8,8 +8,8 @@ This code monitors home utilities (sump pump, hvac, water heater) using a Partic
 It uses MQTT to send data to Home Assistant.
 The code is also still here to use Particle's Webhooks to graph things at Thingspeak.com as 
 the previous version did.
-There are some tips for setting up webhooks/thingspeak in the 
-[Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) README file.
+There are some tips for setting up webhooks/thingspeak at the
+[Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo.
 
 ## Contents
 
