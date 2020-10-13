@@ -18,7 +18,8 @@ You can see in the src/UtilWatch2020.ino code that I have the sensor data pins c
 
 I use a one-wire DS18B20 temperature sensor [like these](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5), duct-taped to the top of my (gas) water heater, sticking into the open space between the water heater and the chimney.  If your water heater is electric this won't work so you'll need to monitor the current (as I do for the sump).
 
-Many people (and the example code in the library) use analog pins for VCC and GND (setting both to output mode and then setting VCC to HIGH and GND to LOW) but I use the native VCC and GND pins on the Photon.  Note for the sensors in the link above you need to [wire them up with a pull-up resistor](https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806) between VCC and the data pin, though some folks claim this is [not necessary](https://wp.josh.com/2014/06/23/no-external-pull-up-needed-for-ds18b20-temp-sensor/)
+Many people (and the example code in the library) use analog pins for VCC and GND (setting both to output mode and then setting VCC to HIGH and GND to LOW) but I use the native VCC and GND pins on the Photon.  Note for the sensors in the link above you need to add a [pull-up resistor](https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806)
+between VCC and DATA, though some claim this is [unnecessary](https://wp.josh.com/2014/06/23/no-external-pull-up-needed-for-ds18b20-temp-sensor/).
 
 ## Sump Pump
 
