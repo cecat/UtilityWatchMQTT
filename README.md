@@ -15,10 +15,11 @@ If you just take src/UtilWatch2020.ino and paste that code into the Particle's w
 just need to manually add the libraries (MQTT, OneWire, DS18B20) and it should be good to go.
 Unless you intend to use git to track your code that's the most straighforward route. 
 
+**DEV/** - device info - what hardware I use for the different sensors.
+
+**HASS/** - how to integrate this with Home Assistant and the Mosquitto MQTT broker integration.
+
 **src/** - code
 
 **project.properties** - version numbers of the libraries at last update
 
-**DEV/** - device info - what hardware I use for the different sensors.
-
-**HASS/** - how to integrate this with Home Assistant and the Mosquitto MQTT broker integration.
