@@ -2,7 +2,12 @@
 
 This project uses a Particle Photon with three sensors attached, each giving me state information about one of my main utilities - sump pump, water heater, and hvac fan (~= heating or cooling).  If you use a Particle Electron you will want to disable the variables  (Particle.variable() lines in the code) as these are continually synchronized with the Particle cloud, unnecessarilyusing up lots of cel bandwidth.
 
-I keep a LiPo battery plugged into the Photon so it won't die if the power goes out.
+I keep a LiPo battery plugged into the Photon so it won't die if the power goes out. You might also
+check out the [parts list](https://github.com/cecat/UtilityWatchMQTT/blob/main/DEV/parts.md).
+I happen to have a bunch of parts already and am set up to solder stuff at a moment's notice, so
+it was easier for me to quickly make stuff.  But really for this project you just need to do
+a bit of soldering for connectors, and most of the parts are easy to order, albeit a bit more
+expensive as some of them are only available in batches of 6 or 10 units.
 
 
 You can see in the src/UtilWatch2020.ino code that I have the sensor data pins connected to pins d0, a0, and a1:
