@@ -21,7 +21,7 @@ $10 [Small breadboard](https://www.amazon.com/DEYUE-breadboard-Set-Prototype-Boa
 
 For the above, you might also consider a [kit like this](https://www.verical.com/pd/particle-industries-----misc-kits-and-tools-photonkit-3439409) that includes Photon and breadboard)
 
-$9 [OneWire Temperature Sensor](https://www.amazon.com/DS18B20-Temperature-Waterproof-Stainless-Raspberry/dp/B087JQ6MCP/ref=sr_1_3?dchild=1&keywords=ds18b20&qid=1602616146&sr=8-3) - this one includes a little breakout board with the pull-up resistor so is an easy on ramp.  The sensors themselves are $2-3 (cheaper for just the sensor without the wire or waterproof packaging) 
+$9 [OneWire Temperature Sensor](https://www.amazon.com/DS18B20-Temperature-Waterproof-Stainless-Raspberry/dp/B087JQ6MCP/ref=sr_1_3?dchild=1&keywords=ds18b20&qid=1602616146&sr=8-3) - this one includes a little breakout board with the pull-up resistor so is an easy on ramp.  The sensors themselves are $5-6 (cheaper for just the sensor without the wire or waterproof packaging) 
 but they are typically [not sold individually](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5). 
 
 $16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/).
