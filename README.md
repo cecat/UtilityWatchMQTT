@@ -1,5 +1,5 @@
 # UtilWatch2020
-Fresh version using MQTT to connect with Home Assistant
+Fresh version of a [Particle Photon-based utility monitoring system](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with Home Assistant
 
 12-October-2020  
 
