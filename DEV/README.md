@@ -9,7 +9,7 @@ as some of them are only available in batches of 6 or 10 units.
 
 ## Sensing each Appliance
 
-###Water Heater
+### Water Heater
 
 I use a one-wire DS18B20 temperature sensor [like these](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5), duct-taped to the top of my (gas) water heater, sticking into the open space between the water heater and the chimney.  If your water heater is electric this won't work so you'll need to monitor the current (as I do for the sump).
 
