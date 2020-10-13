@@ -16,7 +16,13 @@ For the above, you might also consider a [kit like this](https://www.verical.com
 $9 [OneWire Temperature Sensor](https://www.amazon.com/DS18B20-Temperature-Waterproof-Stainless-Raspberry/dp/B087JQ6MCP/ref=sr_1_3?dchild=1&keywords=ds18b20&qid=1602616146&sr=8-3) - this one includes a little breakout board with the pull-up resistor so is an easy on ramp.  The sensors themselves are $2-3 (cheaper for just the sensor without the wire or waterproof packaging) 
 but they are typically [not sold individually](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5). 
 
-$16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/). This comes with a male header and it's a bit of a pain in that you have to create a longer wire to connect to the Photon. This is pretty expensive as sensor but it's convenient.
+$16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/).
+This comes with a male header and it's a bit of a pain in that you have to create a longer wire
+to connect to the Photon. This is pretty expensive as sensors go but it's convenient in that
+you just zip-tie to the wire, no cutting into dangerous AC wiring..
+There are lower cost sensors that clamp on [like these](https://www.amazon.com/SCT-013-000-Non-invasive-Current-Sensor-Transformer/dp/B07FZZZ62L/ref=sr_1_4?dchild=1&keywords=Current+Sensor&qid=1602619691&sr=8-4)
+that are worth a try, but for this project I would avoid any that require you to
+(cut the wire and) place them in-line like [these](https://www.amazon.com/Gikfun-Current-Sensor-Arduino-EK1181x2/dp/B00RBHOLUU/ref=sr_1_3?dchild=1&keywords=Current+Sensor&qid=1602619691&sr=8-3).
 
 $6 [3.3v power supply](https://www.amazon.com/3-3V-Adapter-Power-5-5-2-1/dp/B07BGW2VXV/ref=sr_1_3?dchild=1&keywords=3.3v+power+supply&qid=1602616592&sr=8-3) if your furnace has an outlet that only activates when the fan is on (saving you having to build a step-down circuit or use a voltage regulator).
 
