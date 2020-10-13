@@ -13,5 +13,5 @@ but they are typically [not sold individually](https://www.amazon.com/Gikfun-DS1
 
 $16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/). This comes with a male header and it's a bit of a pain in that you have to create a longer wire to connect to the Photon.
 
-$6 3.3v power supply if your furnace has an outlet that only activates when the fan is on (saving you having to build a step-down circuit or use a voltage regulator).
+$6 [3.3v power supply](https://www.amazon.com/3-3V-Adapter-Power-5-5-2-1/dp/B07BGW2VXV/ref=sr_1_3?dchild=1&keywords=3.3v+power+supply&qid=1602616592&sr=8-3) if your furnace has an outlet that only activates when the fan is on (saving you having to build a step-down circuit or use a voltage regulator).
 
