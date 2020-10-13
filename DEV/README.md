@@ -7,10 +7,12 @@ I keep a LiPo battery plugged into the Photon so it won't die if the power goes 
 
 You can see in the src/UtilWatch2020.ino code that I have the sensor data pins connected to pins d0, a0, and a1:
 
-`// sensor pins (what pins on the Photon go to what sensors)`<br>
-`#define waterPin    D0                      // pin for ds18b20-A to water heater chimney`<br>
-`#define hvacPin     A0                      // pin for HVAC fan current sensor`<br>
-`#define sumpPin     A1                      // pin for sump pump current sensor`<br>
+```
+// sensor pins (what pins on the Photon go to what sensors)
+#define waterPin    D0                      // pin for ds18b20-A to water heater chimney
+#define hvacPin     A0                      // pin for HVAC fan current sensor
+#define sumpPin     A1                      // pin for sump pump current sensor
+```
 
 ## Water Heater
 
