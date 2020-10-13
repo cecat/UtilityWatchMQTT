@@ -1,9 +1,13 @@
 # UtilWatch2020
-Fresh version of a [Particle Photon-based utility monitoring system](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with Home Assistant
+Fresh version of a Particle Photon-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with Home Assistant
 
 12-October-2020  
 
-This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.  It uses Particle.publish() to send data to ThingSpeak.com (for which you need to configure webhooks and ThingSpeak) and also uses MQTT to push data to Home Assistant. 
+This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.
+It uses Particle.publish() to send data to Home Assistant via MQTT.
+The code is still here to use Particle's Webhooks to graph things at Thingspeak.com as well.
+There are some tips for setting up webhooks/thingspeak in the 
+[Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) README file.
 
 ## Stuff from Particle Workbench ##
 
