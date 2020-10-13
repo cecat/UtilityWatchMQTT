@@ -159,7 +159,7 @@ void setup() {
 void loop() {
 
     if ((millis() - lastReport) > reportFreq) {         // time to report yet? 
-    // Report to ThingSpeak
+    // Report to ThingSpeak (just comment this out unless you're a ThingSpeak user- it's not needed for HA integration)
         ThingSpeakReport();
 
     // Report to HA via MQTT
