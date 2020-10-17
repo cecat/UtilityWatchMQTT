@@ -33,8 +33,8 @@ DS18B20  sensor(waterPin, true);
 
 // When you configure Mosquitto Broker MQTT in HA you will set a
 // username and password for MQTT - plug these in here.
-const char *HA_USR = "yours";
-const char *HA_PWD = "yours";
+const char *HA_USR = "your_ha_mqtt_usrname";
+const char *HA_PWD = "your_ha_mqtt_passwd";
 const char *CLIENT_NAME = "photon";
 
 // Topics - these are what you watch for as triggers in HA automations
