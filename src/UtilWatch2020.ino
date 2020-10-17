@@ -33,8 +33,8 @@ DS18B20  sensor(waterPin, true);
 
 // When you configure Mosquitto Broker MQTT in HA you will set a
 // username and password for MQTT - plug these in here.
-const char *HA_USR = "mqtt";
-const char *HA_PWD = "mqtt";
+const char *HA_USR = "yours";
+const char *HA_PWD = "yours";
 const char *CLIENT_NAME = "photon";
 
 // Topics - these are what you watch for as triggers in HA automations
@@ -67,6 +67,8 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
 // Define the broker (IP address of RPi running HA)
 byte server[] = { 192, 168, 7, 157 };
 MQTT client(server, 1883, MQTT_KEEPALIVE, mqtt_callback);
+// or... define broker by name instead
+//MQTT client("yourserver.domain.tld", 1883, MQTT_KEEPALIVE, mqtt_callback);
 
 // global constant parameters
 int     WINDOW          = 900000;           // check to see if sump is in danger every 15 minutes
