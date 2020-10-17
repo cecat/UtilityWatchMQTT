@@ -24,6 +24,25 @@ Each MQTT message has a "topic" that you will use in your HA automation triggers
 
 `const char *TOPIC_A = "ha/util/sumpON";`
 
+You want to first edit your config/configuration.yaml to add a (virtual) sensor for
+each of your topics.  The value of those (virtual) sensors will be the payload. For instance:
+
+```
+sensor:                            
+  - platform: mqtt                 
+    name: "temperature"           
+    state_topic: "your/label/scheme/temp" 
+    scan_interval: 20                
+    unit_of_measurement: 'F'     
+  - platform: mqtt
+    name: "FluxCapCharge"
+    state_topic: "your/label/scheme/fluxCapacitorCharge"
+    scan_interval: 20
+    unit_of_measurement: 'GW'
+...and so on...
+```
+
+
 You can trigger an automation by watching for a particular topic. The yaml code for the trigger within your auomation looks like this:
 
 ```
@@ -31,6 +50,9 @@ trigger:
 - platform: mqtt
   topic: ha/util/sumpON
 ```
+
+Though you can configure the trigger via the UI - select Trigger type "MQTT" and
+specify your topic (ignore the optional payload field).
 
 ## Graphing stuff
 
