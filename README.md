@@ -14,8 +14,19 @@ There are some tips for setting up webhooks/thingspeak at the
 ## Contents
 
 If you just take src/UtilWatch2020.ino and paste that code into the Particle.io's [Web IDE](https://build.particle.io/build/) where you can then
-add the libraries (MQTT, OneWire, DS18B20) and it should be good to go.
-Unless you intend to use git to track your code that's the most straighforward route. 
+add the libraries (MQTT, OneWire, DS18B20) and decide whether to use a secrets.h
+file or fill in mqtt username, password, and server info in the designated spot 
+(and comment out the #include line for secrets.h) in src/UtilWatch2020.ino.  The secrets.h
+file should look like this:
+
+```
+const char *HA_USR = "your mqtt username";
+const char *HA_PWD = "your mqtt passwd";
+// and use one of the following two lines:
+//#define MY_SERVER  "your.server.hostname"
+// or using your IP address w.x.y.z
+byte MY_SERVER[] = { w, x, y, z };
+```
 
 **DEV/** - device info - what hardware I use for the different sensors.
 
