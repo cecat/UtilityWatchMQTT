@@ -5,14 +5,18 @@
  * Date: October 2020
  * 
  * This code watches three sensors and periodically sends values to both Home Assistant and to
- * a nice free graphing site, ThingSpeak.com.  For the latter you have to set up webhooks in the Particle.io
- * cloud. 
+ * a nice free graphing site, ThingSpeak.com.  For the latter you have to set up webhooks in
+ * the Particle.io cloud. 
  */
 
 #include <MQTT.h>
 #include <OneWire.h>
 #include <DS18B20.h>
 #include "math.h"
+
+// comment this out if not using a secrets.h file for your username, password, and servername 
+// or IP address
+#include "secrets.h"
 
 // use particle console messages to debug, watch values to calibrate, etc.
 bool    DEBUG   = FALSE;
@@ -26,15 +30,23 @@ bool    DEBUG   = FALSE;
 DS18B20  sensor(waterPin, true);
 #define MAXRETRY    4                       // max times to poll temperature pin before giving up
 
-/* 
+/*
  * MQTT parameters
  */
-#define MQTT_KEEPALIVE 30 * 60              // 30 minutes
+#define MQTT_KEEPALIVE 30 * 60              // 30 minutes but afaict it's ignored...
 
-// When you configure Mosquitto Broker MQTT in HA you will set a
-// username and password for MQTT - plug these in here.
-const char *HA_USR = "your_ha_mqtt_usrname";
-const char *HA_PWD = "your_ha_mqtt_passwd";
+/* 
+ * When you configure Mosquitto Broker MQTT in HA you will set a
+ * username and password for MQTT - plug these in here if you are not
+ * using a secrets.h file.
+ */
+//const char *HA_USR = "your_ha_mqtt_usrname";
+//const char *HA_PWD = "your_ha_mqtt_passwd";
+//uncomment this line and fill in w.x.y.z if you are going by IP address,:
+//  byte MY_SERVER[] = { 73, 246, 85, 17 };
+// OR this one if you are doing hostname (filling in yours)
+//  #define MY_SERVER "your.mqtt.broker.tld"
+
 const char *CLIENT_NAME = "photon";
 
 // Topics - these are what you watch for as triggers in HA automations
@@ -64,11 +76,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
      Particle.publish("mqtt", p, 3600, PRIVATE);
  }
 
-// Define the broker (IP address of RPi running HA)
-byte server[] = { 192, 168, 7, 157 };
-MQTT client(server, 1883, MQTT_KEEPALIVE, mqtt_callback);
-// or... define broker by name instead
-//MQTT client("yourserver.domain.tld", 1883, MQTT_KEEPALIVE, mqtt_callback);
+MQTT client(MY_SERVER, 1883, MQTT_KEEPALIVE, mqtt_callback);
 
 // global constant parameters
 int     WINDOW          = 900000;           // check to see if sump is in danger every 15 minutes
