@@ -1,22 +1,13 @@
 # Integrating with Home Assistant
 
 ## MQTT
-Add and set up MQTT Mosquitto broker MQTT integration in HA following the [provided documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
-
-In the Particle code (in this repo - src/UtilWatch2020.ino) you'll find several places where you have to customize for your installation.
-
-Username and password (the ones you configured into your Mosquitto integration):
-
-```
-const char *HA_USR = "mqtt";
-const char *HA_PWD = "mqtt";
-```
-
-You will also find down around lines 60-65 a place to plug in the IP address of your Home Assistant server:
-
-`byte server[] = { 192, 168, 7, 157 };`
-
-(You'll want to make a DNS reservation for your HA server so it always gets the same IP address.)
+Add and set up MQTT Mosquitto broker MQTT integration in HA following its
+[documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
+This will include creating an MQTT username and password. These will go into the secrets.h
+file (see the repo top level README.md) or alternately can be plugged into the designated
+spots in the code.  You'll also specify your HA instance (i.e. the MQTT broker) by
+hostname or IP address.  If the latter, make a DNS reservation for your HA server
+so it always gets the same IP address.)
 
 ## TOPICS and Automation
 
@@ -41,9 +32,11 @@ sensor:
     unit_of_measurement: 'GW'
 ...and so on...
 ```
+the scan_interval and unit_of_measure are optional, but if you want a nice graph
+in your HA dashboard you need to specify unit_of_measure here. (see Graphing stuff below)
 
-
-You can trigger an automation by watching for a particular topic. The yaml code for the trigger within your auomation looks like this:
+You can trigger an automation by watching for a particular topic. The yaml code for
+the trigger within your auomation looks like this:
 
 ```
 trigger:
@@ -51,14 +44,19 @@ trigger:
   topic: ha/util/sumpON
 ```
 
-Though you can configure the trigger via the UI - select Trigger type "MQTT" and
+You can configure the trigger via the UI - select Trigger type "MQTT" and
 specify your topic (ignore the optional payload field).
 
 ## Graphing stuff
 
-HA will create a sensor entity associated with the values you pass along with these topics.  You can use these to graph the sensor values you're using to determine the state of your devices (in my case, water heater, sump, and hvac fan ~= heating or cooling).
+HA will create a sensor entity associated with the values you pass along with these
+topics.  You can use these to graph the sensor values you're using to determine
+the state of your devices (in my case, water heater, sump, and hvac fan ~= heating
+or cooling).
 
-In the HA dashboard I am using sensor cards to graph these, and if you want to get a nice, (more) detailed line graph by clicking on the card you want to specify the units (optional) in the card config.
+In the HA dashboard I am using sensor cards to graph these, and if you want to
+get a nice, (more) detailed line graph by clicking on the card you want to specify
+a unit_of_measure in your configuration.yaml file as noted above.
 
 For example, here is the code for my sensor card watching the sump current:
 
@@ -70,5 +68,6 @@ type: sensor
 hours_to_show: 12
 unit: mA
 ```
-
-I mostly track on/off for these utilities so I get a nice timeline that tells me how often things are running (or not).  For the dashboard I use a history graph card.
+I mostly track on/off for these utilities so I get a nice timeline that tells
+me how often things are running (or not).  For this I use a history graph card
+in the dashboard.
