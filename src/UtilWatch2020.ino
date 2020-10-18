@@ -81,7 +81,7 @@ MQTT client(MY_SERVER, 1883, MQTT_KEEPALIVE, mqtt_callback);
 // global constant parameters
 int     WINDOW          = 900000;           // check to see if sump is in danger every 15 minutes
 int     MOTOR_ON        = 100;              // need to calibrate - resting state ~40-50 for my sump pump
-int     FLAME_ON        = 220;              // same here - your chimney temp may vary 
+int     FLAME_ON        = 190;              // same here - your chimney temp may vary 
 // interrupt timers all prime #s to minimize collisions, since I don't trust the Photon to handle colliding interrupts well
 int     sumpCheckFreq   = 2003;             // check sump every ~2 seconds since it typically runs only for 20s or so
 int     allCheckFreq    = 17351;            // check hvac and water heater less often as they have longer duty cycles
