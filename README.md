@@ -22,9 +22,9 @@ file should look like this:
 ```
 const char *HA_USR = "your mqtt username";
 const char *HA_PWD = "your mqtt passwd";
-// and use one of the following two lines:
-//#define MY_SERVER  "your.server.hostname"
-// or using your IP address w.x.y.z
+// and use one of the following lines:
+//char MY_SERVER[] = "your.server.hostname"
+	// or using your IP address w.x.y.z
 byte MY_SERVER[] = { w, x, y, z };
 ```
 
