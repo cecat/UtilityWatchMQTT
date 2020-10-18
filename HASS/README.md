@@ -32,8 +32,8 @@ sensor:
     unit_of_measurement: 'GW'
 ...and so on...
 ```
-the scan_interval and unit_of_measure are optional, but if you want a nice graph
-in your HA dashboard you need to specify unit_of_measure here. (see Graphing stuff below)
+the scan_interval and unit_of_measurement are optional, but if you want a nice graph
+in your HA dashboard you need to specify unit_of_measurement here. (see Graphing stuff below)
 
 You can trigger an automation by watching for a particular topic. The yaml code for
 the trigger within your auomation looks like this:
@@ -56,7 +56,7 @@ or cooling).
 
 In the HA dashboard I am using sensor cards to graph these, and if you want to
 get a nice, (more) detailed line graph by clicking on the card you want to specify
-a unit_of_measure in your configuration.yaml file as noted above.
+a unit_of_measurement in your configuration.yaml file as noted above.
 
 For example, here is the code for my sensor card watching the sump current:
 
