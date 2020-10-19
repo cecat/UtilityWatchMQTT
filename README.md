@@ -5,7 +5,10 @@ the (fabulous open source) [Home Assistant](https://www.home-assistant.io/) runn
 12-October-2020  
 
 This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.
-It uses MQTT to send data to Home Assistant.
+It uses MQTT to send data to Home Assistant. Using QoS=0 (i.e., none) is simplest and seems
+to work fine unless you are trying to send from a cellular-connected Electron with weak signal
+(where I've had a bit of trouble with lost messages).
+
 The code is also still here to use Particle's Webhooks to graph things at Thingspeak.com as 
 the previous version did.
 There are some tips for setting up webhooks/thingspeak at the
