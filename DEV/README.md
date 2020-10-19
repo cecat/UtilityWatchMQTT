@@ -47,7 +47,7 @@ This is connected to my chosen pin and is 0v when the fan is off, then 4v when i
 
 ## Connecting to the Photon
 
-You can see in the src/UtilWatch2020.ino code that I have the sensor data pins connected to pins d0, a0, and a1 (obviously you can use whatever you want, just make sure to these assignments match):
+You can see in the src/UtilWatch2020.ino code that I have the sensor data pins connected to pins d0, a0, and a1 (obviously you can use whatever you want, just make sure these #define lines match):
 
 ```
 // sensor pins (what pins on the Photon go to what sensors)
