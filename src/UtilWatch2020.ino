@@ -86,6 +86,9 @@ int     FLAME_ON        = 190;              // same here - your chimney temp may
 int     sumpCheckFreq   = 2003;             // check sump every ~2 seconds since it typically runs only for 20s or so
 int     allCheckFreq    = 17351;            // check hvac and water heater less often as they have longer duty cycles
 double  reportFreq      = 23431;            // report a var to ThingSpeak every ~23 seconds
+double  mqttFreq        = 119993;           // report a var to HASS via MQTT every ~2 minutes
+double  lastReport      = 0;
+double  lastMQTT        = 0;
 int     reportCount     = 0;
 #define HIST              32               // number of sump checks to keep in short term memory
 #define DANGER		      6		           // number of times sump runs in 30 min before I worry
@@ -122,8 +125,6 @@ Timer sumpTimer(sumpCheckFreq, checkSump);  // every checkFreq ms check the sump
 Timer allTimer(allCheckFreq,    checkAll);  // every allCheckFreq ms check the others
 Timer alertTimer(WINDOW, siren);            // let's blow the wistle every 15 min if needed
 
-int     lastReport      = 0;
-
 /*
   prelims
 */
@@ -136,6 +137,7 @@ void setup() {
     pinMode(waterPin,   INPUT);
     Serial.begin      (115200);
     // set up vars to export (tip- compiler barfs if the variable alias (in quotes) is longer than 12 characters)
+    // get rid of these if you're using cellular (Electron) - they devour bandwidth staying in sync
     Particle.variable("sumpCount",  runCount);
     Particle.variable("sumpCur",    sumpCur);
     Particle.variable("hvacCur",    hvacCur);
@@ -171,44 +173,36 @@ void loop() {
     if ((millis() - lastReport) > reportFreq) {         // time to report yet? 
     // Report to ThingSpeak (just comment this out unless you're a ThingSpeak user- it's not needed for HA integration)
         ThingSpeakReport();
-
-    // Report to HA via MQTT
-        if (client.isConnected()) {
-
-            Particle.publish("mqtt", "Pushing state data", 3600, PRIVATE); delay(500);
-            
-            if (sumpOn) {   client.publish(TOPIC_A, String(sumpCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_A, PRIVATE);  }
-                  else  {   client.publish(TOPIC_B, String(sumpCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_B, PRIVATE);  }
-                  
-            delay(500);
-            
-            if (hvacOn) {   client.publish(TOPIC_C, String(hvacCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_C, PRIVATE);  }
-                  else  {   client.publish(TOPIC_D, String(hvacCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_D, PRIVATE);  }
-                  
-            delay(500);
-            
-            if (heaterOn) { client.publish(TOPIC_E, String(waterTemp)); if (DEBUG) Particle.publish("mqtt", TOPIC_E, PRIVATE); }
-                  else    { client.publish(TOPIC_F, String(waterTemp)); if (DEBUG) Particle.publish("mqtt", TOPIC_F, PRIVATE); }
-                  
-            delay(500);
-            
-            Particle.publish("mqtt", "Pushing sensor data", 3600, PRIVATE); delay(500);
-
-            client.publish(TOPIC_H, String(runCount));  if (DEBUG) Particle.publish("mqtt_sump_ct", String(runCount), PRIVATE);  delay(500); 
-            client.publish(TOPIC_I, String(sumpCur));   if (DEBUG) Particle.publish("mqtt_sump_cur", String(sumpCur), PRIVATE);  delay(500);
-            client.publish(TOPIC_J, String(hvacCur));   if (DEBUG) Particle.publish("mqtt_hvac_cur", String(hvacCur), PRIVATE);  delay(500);
-            client.publish(TOPIC_K, String(waterTemp)); if (DEBUG) Particle.publish("mqtt_whtr_temp", String(waterTemp), PRIVATE);  
-            
-          } else {
-            client.connect(CLIENT_NAME, HA_USR, HA_PWD);
-            if (client.isConnected()) {
-                Particle.publish("mqtt", "Re-connected to HA", 3600, PRIVATE);
-            } else {
-                Particle.publish("mqtt", "Failed to re-connect to HA", 3600, PRIVATE);
-          }
-        }
-        
         lastReport = millis();
+    }
+    // Report to HA via MQTT
+    if ((millis() - lastMQTT) > mqttFreq) {
+        lastMQTT = millis();
+
+        Particle.publish("mqtt", "Pushing state data", 3600, PRIVATE); delay(500);
+            
+        if (sumpOn) {   tellHASS(TOPIC_A, String(sumpCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_A, PRIVATE);  }
+                  else  {   tellHASS(TOPIC_B, String(sumpCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_B, PRIVATE);  }
+                  
+        delay(500);
+            
+        if (hvacOn) {   tellHASS(TOPIC_C, String(hvacCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_C, PRIVATE);  }
+                  else  {   tellHASS(TOPIC_D, String(hvacCur));   if (DEBUG) Particle.publish("mqtt", TOPIC_D, PRIVATE);  }
+                  
+        delay(500);
+            
+        if (heaterOn) { tellHASS(TOPIC_E, String(waterTemp)); if (DEBUG) Particle.publish("mqtt", TOPIC_E, PRIVATE); }
+                  else    { tellHASS(TOPIC_F, String(waterTemp)); if (DEBUG) Particle.publish("mqtt", TOPIC_F, PRIVATE); }
+                  
+        delay(500);
+            
+        Particle.publish("mqtt", "Pushing sensor data", 3600, PRIVATE); delay(500);
+
+        tellHASS(TOPIC_H, String(runCount));  if (DEBUG) Particle.publish("mqtt_sump_ct", String(runCount), PRIVATE);  delay(500); 
+        tellHASS(TOPIC_I, String(sumpCur));   if (DEBUG) Particle.publish("mqtt_sump_cur", String(sumpCur), PRIVATE);  delay(500);
+        tellHASS(TOPIC_J, String(hvacCur));   if (DEBUG) Particle.publish("mqtt_hvac_cur", String(hvacCur), PRIVATE);  delay(500);
+        tellHASS(TOPIC_K, String(waterTemp)); if (DEBUG) Particle.publish("mqtt_whtr_temp", String(waterTemp), PRIVATE);  
+            
     }
 }
 /************************************/
@@ -322,6 +316,19 @@ double getTemp() {  // using example code from the DS18B20 library
   }
   return (fahrenheit); // F, because this is Amurica
 }
+
+//
+// put the mqtt stuff in one place since the error detect/correct
+// due to oddly short connection timeouts (ignoring MQTT_KEEPALIVE afaict)
+// require recovery code
+
+void tellHASS (const char *ha_topic, String ha_payload) {
+
+  client.connect(CLIENT_NAME, HA_USR, HA_PWD);
+  client.publish(ha_topic, ha_payload);
+  client.disconnect();
+}
+
 
 /*
  * This code is useful if one wants to use webhooks at the Particle Cloud
