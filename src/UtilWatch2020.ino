@@ -65,9 +65,7 @@ const char *TOPIC_L = "ha/util/sumpWrn";
 const char *TOPIC_M = "ha/util/sumpOK";
 
 // MQTT functions
-void mqtt_callback(char* topic, byte* payload, unsigned int length);
-void timer_callback_send_mqqt_data();    // tbh I don't know what this is as it seems not used and spells mqtt wrong
-
+void timer_callback_send_mqqt_data();    
  // MQTT callbacks implementation
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
      char p[length + 1];
