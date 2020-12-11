@@ -34,6 +34,9 @@ sensor:
 ```
 the scan_interval and unit_of_measurement are optional, but if you want a nice graph
 in your HA dashboard you need to specify unit_of_measurement here. (see Graphing stuff below)
+Without the unit_of_measurement you will see a bar-graph type display in HASS (if you add a panel
+to your overview dashboard) with different colors horizontally as the variable changes (not very
+useful).  With unit_of_measurement you'll get a graph.
 
 You can trigger an automation by watching for a particular topic. The yaml code for
 the trigger within your auomation looks like this:
