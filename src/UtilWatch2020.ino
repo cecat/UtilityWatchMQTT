@@ -67,8 +67,6 @@ double  reportFreq      = 23431;            // report a var to ThingSpeak every 
 double  mqttFreq        = 119993;           // report a var to HASS via MQTT every ~2 minutes
 double  lastMQTT        = 0;
 int     reportCount     = 0;
-#define HIST              32               // number of sump checks to keep in short term memory
-#define DANGER		      6		           // number of times sump runs in 30 min before I worry
 
 // global variables
 bool    sumpOn          = false;            // state variables
@@ -82,8 +80,6 @@ double  ambientTemp     = 50;
 String  tString;                            // string buffer to hold timestamp
 
 // statistics variables
-int     sumpHistory      [HIST];            // all sump readings between reports
-int     sumpPointer     = 0;
 bool    sumpEvent       = false;
 bool    hvacEvent       = false;
 int     sumpStart       = 0;                // start time of sump event
@@ -92,6 +88,7 @@ int     hvacStart       = 0;                // start time of hvac event
 int     hvacDuration    = 0;                // duration of hvac event
 
 // sump duty cycle variables
+#define DANGER		      6		           // number of times sump runs in 30 min before I worry
 #define SMAX              16                // maximum we might ever see the sump run in a window
 int     sumpRuns        [SMAX];             // keep track of how many time sump runs in a given window of time
 double  dutyWindow      = 1800000;          // set the sump duty cycle of interest window to 30 minutes
@@ -114,7 +111,7 @@ void setup() {
     pinMode(hvacPin,    INPUT);
     pinMode(waterPin,   INPUT);
     Serial.begin      (115200);
-    for (int i=0; i<HIST; i++) sumpHistory[i] = millis()-dutyWindow; // make all of sump hist entries >30 min ago on startup
+    for (int i=0; i<SMAX; i++) sumpRuns[i] = millis()-dutyWindow; // make all of sump run entries >>30 min ago on startup
     // set timers
     sumpTimer.start();
     allTimer.start();
@@ -166,8 +163,6 @@ void loop() {
 void checkSump () {
 
     sumpCur = analogRead(sumpPin);
-    sumpPointer = (sumpPointer+1) % HIST;
-    sumpHistory[sumpPointer] = sumpCur;
     if (sumpCur > PUMP_ON) {
         if (!sumpOn) {
             //sumpEvent = true;
