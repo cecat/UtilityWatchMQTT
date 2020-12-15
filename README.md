@@ -2,15 +2,6 @@
 Fresh version of a [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with
 the (fabulous open source) [Home Assistant](https://www.home-assistant.io/) running on a [Raspberry Pi 4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
 
-12-October-2020  
-
-This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.
-It uses MQTT to send data to Home Assistant. Using QoS=0 (i.e., none) is simplest and seems
-to work fine unless you are trying to send from a cellular-connected Electron with weak signal
-(where I've had a bit of trouble with lost messages).
-
-The code is also still here to use Particle's Webhooks to graph things at Thingspeak.com as 
-the previous version did.
 There are some tips for setting up webhooks/thingspeak at the
 [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo.
 
@@ -38,4 +29,24 @@ byte MY_SERVER[] = { w, x, y, z };
 **src/** - code
 
 **project.properties** - version numbers of the libraries at last update
+
+## Change log
+
+12-October-2020  
+
+This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.
+It uses MQTT to send data to Home Assistant. Using QoS=0 (i.e., none) is simplest and seems
+to work fine unless you are trying to send from a cellular-connected Electron with weak signal
+(where I've had a bit of trouble with lost messages).
+
+14-December-2020
+
+The code has been simplified, removing lots of delays and debug assist code.
+
+The long list of mqtt topics is now pushed out to topics.h.
+
+The commented out code for embedding mqtt username, password, and server is gone (clutter) and a template for your secret.h is included - put your info there and rename it secrets.h
+
+The code to use Particle's Webhooks to graph things at Thingspeak.com as 
+the previous version did has been pulled out but saved in the src directory for future use.
 
