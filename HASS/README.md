@@ -3,20 +3,22 @@
 ## MQTT
 Add and set up *MQTT Mosquitto broker* integration in HASS following its
 [documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
-This will include creating an MQTT *username* and *password*---these will go into the secrets.h
-file (see the repo top level README.md) or alternately can be plugged into the designated
-spots in the code.  You'll also specify your HASS instance (i.e. the MQTT broker) by
+This will include creating an MQTT *username* and *password* --- which will go into the secrets.h
+file (../README.md) or alternately the three lines can be put into UtilWatch2020.ino.
+There you also specify your HASS server (i.e. the MQTT broker) by
 hostname or IP address.  If the latter, make a DNS reservation for your HASS server
 so it always gets the same IP address.)
 
 ## TOPICS and Automation
 
-Each MQTT message has a *topic* that you will use in your HASS automation triggers.  I've defined the ones I use in src/UtilWatch2020.ino around lines 35-40, e.g.:
+Each MQTT message has a *topic* that creates a sensor variable and is used for HASS automation triggers.
+I have so many that I pulled them out and created a topics.h file (src/topics.h). You can just put these
+into UtilWatch2020.ino using this form:
 
 `const char *TOPIC_A = "ha/util/sumpON";`
 
-You must first edit your HASS *config/configuration.yaml* file to add a (virtual) sensor for
-each of your topics.  The value of those (virtual) sensors will be taken from the mqtt payload. For instance:
+To use these you must edit your HASS *config/configuration.yaml* file to add a (virtual) sensor for
+each topic.  The value of those (virtual) sensors will be taken from the mqtt payload. Example:
 
 ```
 sensor:                            
