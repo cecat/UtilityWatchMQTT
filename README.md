@@ -1,6 +1,6 @@
 # UtilWatch2020
 Fresh version of a [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with
-the (fabulous open source) [Home Assistant](https://www.home-assistant.io/) running on a [Raspberry Pi 4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
+the (fabulous open source) [Home Assistant (HASS)](https://www.home-assistant.io/) running on a [Raspberry Pi 4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
 
 There are some tips for setting up webhooks/thingspeak at the
 [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo.
@@ -22,10 +22,8 @@ or paste template_secrets.h into your code, in either case filling in your parti
 
 ## Change log
 
-12-October-2020  
-
-This code monitors home utilities (sump pump, hvac, water heater) using a Particle Photon.
-It uses MQTT to send data to Home Assistant. Using QoS=0 (i.e., none) is simplest and seems
+*12-October-2020:* Monitor home utilities (sump pump, hvac, water heater...) using a Particle Photon.
+It uses MQTT to send data to HASS. Using QoS=0 (i.e., none) is simplest and seems
 to work fine unless you are trying to send from a cellular-connected Electron with weak signal
 (where I've had a bit of trouble with lost messages).
 
