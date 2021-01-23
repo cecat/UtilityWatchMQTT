@@ -35,7 +35,7 @@ sensor:
 ...and so on...
 ```
 
-This example above defines two HASS entities "sensor.temperature" and "sensor.FluxCapCharge."
+This example above defines two HASS entities *sensor.temperature* and *sensor.FluxCapCharge.*
 When HASS receives a mqtt message with topic *your/label/scheme/temp* it updates sensor.temperature
 with the value you sent in the HASS message (see *tellHASS()* routine in *src/UtilWatch2020.ino*).
 
