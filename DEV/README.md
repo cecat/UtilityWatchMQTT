@@ -14,8 +14,12 @@ as some of them are only available in batches of 6 or 10 units.
 ## Sensing each Appliance
 
 The explanations below are for direct-wiring your sensors into the Photon, which I did originally. More
-recently I switched to a [Grove sensor shield](https://www.amazon.com/gp/product/B071LCPX7P/ref=ppx_yo_dt_b_search_asin_title), so the sensor wiring below is applicable to giving them
-a standard 4-wire Grove connector.
+recently I switched to a
+[Grove sensor shield](https://www.amazon.com/gp/product/B071LCPX7P/ref=ppx_yo_dt_b_search_asin_title),
+so the sensor wiring below is applicable to giving them a standard 4-wire Grove connector. The 
+advantage to using a shield vs. soldering stuff is that you can readily swap out the Photon, or 
+any of the sensors. I would recommend this over soldering things to your photon or, as I did,
+soldering the Photon and connectors to a strip-board.
 
 ### Water Heater
 
