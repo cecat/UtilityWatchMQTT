@@ -1,49 +1,51 @@
 # Hardware
 
-This project uses a Particle Photon with three sensors attached, each giving me state information about one of my main utilities - sump pump, water heater, and hvac fan (~= heating or cooling).  If you use a Particle Electron you will want to disable the variables  (Particle.variable() lines in the code) as these are continually synchronized with the Particle cloud, unnecessarilyusing up lots of cel bandwidth.
+This project uses a *Particle Photon* with four sensors attached, each providing state information about
+one of my main utilities - sump pump, water heater, and hvac fan (~= heating or cooling), and the ambient
+temperature of the basement.  If you use a *Particle Electron* you may want to disable the variables
+(*Particle.variable()* lines in the code) as these are continually synchronized with the Particle cloud,
+unnecessarily using up your cel budget.
 
-You might also check out the [parts list](https://github.com/cecat/UtilityWatchMQTT/blob/main/DEV/parts.md).
-For this project you just need to do a bit of soldering for connectors, and most of the parts are
+The [parts list](https://github.com/cecat/UtilityWatchMQTT/blob/main/DEV/parts.md) contains what I
+am using.  You'll need to a bit of soldering for connectors, and most of the parts are
 easy to order, albeit a bit more expensive if you don't already have a cache of parts from other projects,
 as some of them are only available in batches of 6 or 10 units.
 
 ## Sensing each Appliance
 
+The explanations below are for direct-wiring your sensors into the Photon, which I did originally. More
+recently I switched to a [Grove sensor shield](https://www.amazon.com/gp/product/B071LCPX7P/ref=ppx_yo_dt_b_search_asin_title), so the sensor wiring below is applicable to giving them
+a standard 4-wire Grove connector.
+
 ### Water Heater
 
-I use a one-wire DS18B20 temperature sensor [like these](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5), duct-taped to the top of my (gas) water heater, sticking into the open space between the water heater and the chimney.  If your water heater is electric this won't work so you'll need to monitor the current (as I do for the sump).
+I use a one-wire *DS18B20* temperature sensor
+[like these](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5),
+duct-taped to the top of my (gas) water heater, sticking into the open space between the
+water heater and the chimney.  If your water heater is electric this won't work so you'll
+need to monitor the current (See Sump Pump below).
 
-Many people (and the example code in the library) use analog pins for VCC and GND (setting both to output mode and then setting VCC to HIGH and GND to LOW) but I use the native VCC and GND pins on the Photon.  Note for the sensors in the link above you need to add a [pull-up resistor](https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806)
-between VCC and DATA, though some claim this is [unnecessary](https://wp.josh.com/2014/06/23/no-external-pull-up-needed-for-ds18b20-temp-sensor/).
+Many people (and the example code in the library) use analog pins for VCC and GND (setting both to
+output mode and then setting VCC to HIGH and GND to LOW) but I am using the native VCC and GND pins
+on the Photon.  Note for the sensors in the link above you need to add a
+[pull-up resistor](https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806)
+between VCC and DATA, though [some claim this is unnecessary](https://wp.josh.com/2014/06/23/no-external-pull-up-needed-for-ds18b20-temp-sensor/).
 
 ### Sump Pump
 
 When I first implemented this system I used an accelerometer on the sump discharge pipe,
 sampling it at like 16x/second and looking for motion, which was fun.  But now I use
-a Hall Effect current sensor - I found a nice one from
-[ModernDevice](https://moderndevice.com/product/current-sensor/) that zip-ties to the power cord. 
-An advantage to the vibration-based sensor is that if you have a battery backup pump the sensor
-will detect that one as well as the main.  This is how I figured out once that my main had
-failed (it was running more frequently than normal since the battery backup was smaller).
-I don't have a battery backup hooked up at the moment.  But I do track how many times the
-sump runs, and for my situation I have figured out that I should be worried when the sump
-runs more than about 7 times in 30 minutes, thus I track that and send it to HA where I have
-an automation that texts me when the sump is running that often. And, well, you could also monitor
-your battery backup with a second current sensor.
-
-At some point it would be nice to add some logic to determine that the sump is out
-(vs. just inactive because it's not needed), such as watching the frequency and
-detecting that it suddenly goes from running a lot to not running.
+a [Hall Effect current sensor](https://moderndevice.com/product/current-sensor/)
+that zip-ties to the power cord. 
 
 ### HVAC Fan
 
 On the side of my furnace is an outlet that's only powered when the fan is on (I think this is
 quite common, for instance to plug in a humidifier).  I grabbed an old 9v wall wart and stepped
 it down to 4v with a couple of resistors
-[here's a nice explanation](http://www.learningaboutelectronics.com/Articles/How-to-reduce-voltage-with-resistors.php).
+[(like this)](http://www.learningaboutelectronics.com/Articles/How-to-reduce-voltage-with-resistors.php).
 If you have a spare voltage regulator (e.g., one of [these](https://www.amazon.com/6-Pcs-STMicroelectronics-LD1117V33-Voltage-Regulator/dp/B01MQF7D9D/ref=sr_1_4?dchild=1&keywords=voltage+regulator+3.3v&qid=1602614666&sr=8-4)
-laying around you can of course use that.
-This is connected to my chosen pin and is 0v when the fan is off, then 4v when it turns on (or 3.3v if you use a standard voltage regulator).
+you can of course use that.
 
 ## Connecting to the Photon
 
@@ -51,13 +53,11 @@ You can see in the src/UtilWatch2020.ino code that I have the sensor data pins c
 
 ```
 // sensor pins (what pins on the Photon go to what sensors)
-#define waterPin    D0                      // pin for ds18b20-A to water heater chimney
+#define waterPin    D2                      // pin for ds18b20-A to water heater chimney
 #define hvacPin     A0                      // pin for HVAC fan current sensor
-#define sumpPin     A1                      // pin for sump pump current sensor
+#define sumpPin     A4                      // pin for sump pump current sensor
 ```
 
-The Photon has VCC and GND pins so I use these.  Some people use digital pins for
-VCC and GND for their sensors (setting them to HIGH and LOW for VCC and GND, respectively).
-One advvantag to that is if you want to sswitch polarity, such as with a soil moisture sensor,
-or if you want to turn things on or off.  In this project we don't need to do these things,
-so the standard issue VCC and GND pins work fine.
+If you wire directly or use the Grove shield just make sure you update the pin assignments to the ones 
+you select.
+
