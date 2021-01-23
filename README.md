@@ -1,6 +1,8 @@
 # UtilWatch2020
 A [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with
-the (fabulous open source) [Home Assistant (HASS)](https://www.home-assistant.io/).
+[Home Assistant (HASS)](https://www.home-assistant.io/). The code has been tested on
+the [Particle Electron](https://docs.particle.io/electron) (cellular) but you may wish to throttle
+back on the messaging frequency to manage cellular costs.
 
 There are some tips for setting up webhooks/thingspeak at the
 [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo.
