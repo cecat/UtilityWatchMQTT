@@ -22,6 +22,9 @@ You can go with pre-packaged Grove sensors but typically the grove connectors ar
 One way or another you need to make longer wires to reach your furnace, sump pump, water heater, etc. 
 That being the case, you'll solder the sensors below to grove 4-wire connectors.
 
+The [Grove 4-wire system is explained here](https://wiki.seeedstudio.com/Grove_System/), including 
+[pin assignments](https://wiki.seeedstudio.com/Grove_System/#interface-of-grove-modules).
+
 $13 [OneWire Temperature Sensor](https://www.amazon.com/IZOKEE-Temperature-Stainless-Waterproof-Resistor/dp/B082WVWC3T/ref=sr_1_4). 
 This one includes pull-up resistors so is an easy on-ramp.
 The sensors themselves are $5-6 (cheaper for just the sensor without the wire or waterproof packaging) 

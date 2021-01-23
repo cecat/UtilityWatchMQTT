@@ -19,7 +19,7 @@ recently I switched to a
 so the sensor wiring below is applicable to giving them a standard 4-wire Grove connector. The 
 advantage to using a shield vs. soldering stuff is that you can readily swap out the Photon, or 
 any of the sensors. I would recommend this over soldering things to your photon or, as I did,
-soldering the Photon and connectors to a strip-board.
+soldering the Photon and connectors to a strip-board. [All about Grove](https://wiki.seeedstudio.com/Grove_System/).
 
 ### Water Heater
 
@@ -47,11 +47,11 @@ that zip-ties to the power cord.
 ### HVAC Fan
 
 On the side of my furnace is an outlet that's only powered when the fan is on (I think this is
-quite common, for instance to plug in a humidifier).  I grabbed an old 9v wall wart and stepped
+quite common, for instance to plug in a humidifier).  The easiest thing to do here is buy a 3.3v
+DC wall wart, cut the wire, and solder it onto a Grove connector with the negative wire to GND (pin4/black)
+and the positive wire to the primary signal wire (pin1/yellow).  I had an old 9v wall wart and stepped
 it down to 4v with a couple of resistors
 [(like this)](http://www.learningaboutelectronics.com/Articles/How-to-reduce-voltage-with-resistors.php).
-If you have a spare voltage regulator (e.g., one of [these](https://www.amazon.com/6-Pcs-STMicroelectronics-LD1117V33-Voltage-Regulator/dp/B01MQF7D9D/ref=sr_1_4?dchild=1&keywords=voltage+regulator+3.3v&qid=1602614666&sr=8-4))
-you can of course use that.
 
 ## Connecting to the Photon
 
