@@ -1,17 +1,17 @@
 # Integrating with Home Assistant
 
 ## MQTT
-Add and set up MQTT Mosquitto broker MQTT integration in HA following its
+Add and set up *MQTT Mosquitto broker* integration in HASS following its
 [documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
-This will include creating an MQTT username and password--these will go into the secrets.h
+This will include creating an MQTT *username* and *password*---these will go into the secrets.h
 file (see the repo top level README.md) or alternately can be plugged into the designated
-spots in the code.  You'll also specify your HA instance (i.e. the MQTT broker) by
-hostname or IP address.  If the latter, make a DNS reservation for your HA server
+spots in the code.  You'll also specify your HASS instance (i.e. the MQTT broker) by
+hostname or IP address.  If the latter, make a DNS reservation for your HASS server
 so it always gets the same IP address.)
 
 ## TOPICS and Automation
 
-Each MQTT message has a *topic* that you will use in your HA automation triggers.  I've defined the ones I use in src/UtilWatch2020.ino around lines 35-40, e.g.:
+Each MQTT message has a *topic* that you will use in your HASS automation triggers.  I've defined the ones I use in src/UtilWatch2020.ino around lines 35-40, e.g.:
 
 `const char *TOPIC_A = "ha/util/sumpON";`
 
@@ -38,7 +38,7 @@ When HASS receives a mqtt message with topic *your/label/scheme/temp* it updates
 with the value you sent in the HASS message (see *tellHASS()* routine in *src/UtilWatch2020.ino*).
 
 In the above example, the *scan_interval* and *unit_of_measurement* are optional, but if you want a nice graph
-in your HA dashboard you need to specify *unit_of_measurement* here. (see Graphing stuff below)
+in your HASS dashboard you need to specify *unit_of_measurement* here. (see Graphing stuff below)
 Without the *unit_of_measurement* you will see a bar-graph type display in HASS (if you add a panel
 to your dashboard) with different colors horizontally as the variable changes (not very
 useful).  With *unit_of_measurement* you'll get a graph.
@@ -57,12 +57,12 @@ specify your topic (ignore the optional payload field).
 
 ## Graphing stuff
 
-HA will create a sensor entity associated with the values you pass along with these
+HASS will create a sensor entity associated with the values you pass along with these
 topics.  You can use these to graph the sensor values you're using to determine
 the state of your devices (in my case, water heater, sump, and hvac fan ~= heating
 or cooling).
 
-In the HA dashboard I am using sensor cards to graph these, and if you want to
+In the HASS dashboard I am using sensor cards to graph these, and if you want to
 get a nice, (more) detailed line graph by clicking on the card you want to specify
 a unit_of_measurement in your configuration.yaml file as noted above.
 
