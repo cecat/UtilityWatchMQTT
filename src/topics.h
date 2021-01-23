@@ -15,3 +15,8 @@ const char *TOPIC_K = "ha/util/waterT";
 const char *TOPIC_L = "ha/util/sumpWrn";
 const char *TOPIC_M = "ha/util/sumpOK";
 const char *TOPIC_N = "ha/util/ambientT";
+
+const char *TOPIC_MS= "ha/util/secs";
+const char *TOPIC_TH= "ha/util/toldhass";
+const char *TOPIC_MF= "ha/util/mqttfails";
+const char *TOPIC_X = "ha/util/reset";
