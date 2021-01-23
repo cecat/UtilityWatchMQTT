@@ -11,12 +11,12 @@ so it always gets the same IP address.)
 
 ## TOPICS and Automation
 
-Each MQTT message has a "topic" that you will use in your HA automation triggers.  I've defined the ones I use in src/UtilWatch2020.ino around lines 35-40, e.g.:
+Each MQTT message has a *topic* that you will use in your HA automation triggers.  I've defined the ones I use in src/UtilWatch2020.ino around lines 35-40, e.g.:
 
 `const char *TOPIC_A = "ha/util/sumpON";`
 
-You want to first edit your config/configuration.yaml to add a (virtual) sensor for
-each of your topics.  The value of those (virtual) sensors will be the payload. For instance:
+You must first edit your HASS *config/configuration.yaml* file to add a (virtual) sensor for
+each of your topics.  The value of those (virtual) sensors will be taken from the mqtt payload. For instance:
 
 ```
 sensor:                            
@@ -32,13 +32,18 @@ sensor:
     unit_of_measurement: 'GW'
 ...and so on...
 ```
-the scan_interval and unit_of_measurement are optional, but if you want a nice graph
-in your HA dashboard you need to specify unit_of_measurement here. (see Graphing stuff below)
-Without the unit_of_measurement you will see a bar-graph type display in HASS (if you add a panel
-to your overview dashboard) with different colors horizontally as the variable changes (not very
-useful).  With unit_of_measurement you'll get a graph.
 
-You can trigger an automation by watching for a particular topic. The yaml code for
+This example above defines two HASS entities "sensor.temperature" and "sensor.FluxCapCharge."
+When HASS receives a mqtt message with topic *your/label/scheme/temp* it updates sensor.temperature
+with the value you sent in the HASS message (see *tellHASS()* routine in *src/UtilWatch2020.ino*).
+
+In the above example, the *scan_interval* and *unit_of_measurement* are optional, but if you want a nice graph
+in your HA dashboard you need to specify *unit_of_measurement* here. (see Graphing stuff below)
+Without the *unit_of_measurement* you will see a bar-graph type display in HASS (if you add a panel
+to your dashboard) with different colors horizontally as the variable changes (not very
+useful).  With *unit_of_measurement* you'll get a graph.
+
+You can also trigger an automation by watching for a particular topic. The yaml code for
 the trigger within your auomation looks like this:
 
 ```
@@ -72,5 +77,5 @@ hours_to_show: 12
 unit: mA
 ```
 I mostly track on/off for these utilities so I get a nice timeline that tells
-me how often things are running (or not).  For this I use a history graph card
+me how often things are running (or not).  A history graph card works nicely for this
 in the dashboard.
