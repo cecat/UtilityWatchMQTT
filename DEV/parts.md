@@ -16,6 +16,8 @@ That means either soldering wires to terminals or putting connectors on them.
 $20 [Particle Photon (WiFi)](https://store.particle.io/collections/wifi/products/photon)
 (buy with headers so you can plug into a breadboard)
 
+##Old School##
+
 $10 [Small breadboard](https://www.amazon.com/DEYUE-breadboard-Set-Prototype-Board/dp/B07LFD4LT6/ref=sr_1_3?dchild=1&keywords=small+breadboard&qid=1602615796&sr=8-3)
 (they are actually about $1-2 but not sold individually so you would typically buy a handful)
 
