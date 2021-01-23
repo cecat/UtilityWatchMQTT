@@ -35,6 +35,8 @@ on the Photon.  Note for the sensors in the link above you need to add a
 [pull-up resistor](https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806)
 between VCC and DATA, though [some claim this is unnecessary](https://wp.josh.com/2014/06/23/no-external-pull-up-needed-for-ds18b20-temp-sensor/).
 
+I use a second *DS18B20* to track the basement temperature because, why not.
+
 ### Sump Pump
 
 When I first implemented this system I used an accelerometer on the sump discharge pipe,
