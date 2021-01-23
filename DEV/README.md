@@ -44,7 +44,7 @@ On the side of my furnace is an outlet that's only powered when the fan is on (I
 quite common, for instance to plug in a humidifier).  I grabbed an old 9v wall wart and stepped
 it down to 4v with a couple of resistors
 [(like this)](http://www.learningaboutelectronics.com/Articles/How-to-reduce-voltage-with-resistors.php).
-If you have a spare voltage regulator (e.g., one of [these](https://www.amazon.com/6-Pcs-STMicroelectronics-LD1117V33-Voltage-Regulator/dp/B01MQF7D9D/ref=sr_1_4?dchild=1&keywords=voltage+regulator+3.3v&qid=1602614666&sr=8-4)
+If you have a spare voltage regulator (e.g., one of [these](https://www.amazon.com/6-Pcs-STMicroelectronics-LD1117V33-Voltage-Regulator/dp/B01MQF7D9D/ref=sr_1_4?dchild=1&keywords=voltage+regulator+3.3v&qid=1602614666&sr=8-4))
 you can of course use that.
 
 ## Connecting to the Photon
