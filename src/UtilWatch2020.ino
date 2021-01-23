@@ -137,21 +137,27 @@ void loop() {
     if ((millis() - lastMQTT) > mqttFreq) {
 
         lastMQTT = millis();
-
-        if (sumpOn)     { tellHASS(TOPIC_A, String(sumpCur)); }
-                  else  { tellHASS(TOPIC_B, String(sumpCur)); }
-        if (hvacOn)     { tellHASS(TOPIC_C, String(hvacCur)); }
-                  else  { tellHASS(TOPIC_D, String(hvacCur)); }
-        if (heaterOn)   { tellHASS(TOPIC_E, String(waterTemp)); }
-                  else  { tellHASS(TOPIC_F, String(waterTemp)); }
+      client.connect(CLIENT_NAME, HA_USR, HA_PWD);
+      if (client.isConnected()) {
+        if (sumpOn)     { streamHASS(TOPIC_A, String(sumpCur)); }
+                  else  { streamHASS(TOPIC_B, String(sumpCur)); }
+        if (hvacOn)     { streamHASS(TOPIC_C, String(hvacCur)); }
+                  else  { streamHASS(TOPIC_D, String(hvacCur)); }
+        if (heaterOn)   { streamHASS(TOPIC_E, String(waterTemp)); }
+                  else  { streamHASS(TOPIC_F, String(waterTemp)); }
                               
-        tellHASS(TOPIC_H, String(runCount));  
-        tellHASS(TOPIC_I, String(sumpCur));    
-        tellHASS(TOPIC_J, String(hvacCur));    
-        tellHASS(TOPIC_K, String(waterTemp));  
-        tellHASS(TOPIC_N, String(ambientTemp)); 
-        tellHASS(TOPIC_TH, String(mqttCount));
-        tellHASS(TOPIC_MF, String(mqttFailCount));
+        streamHASS(TOPIC_H, String(runCount));  
+        streamHASS(TOPIC_I, String(sumpCur));    
+        streamHASS(TOPIC_J, String(hvacCur));    
+        streamHASS(TOPIC_K, String(waterTemp));  
+        streamHASS(TOPIC_N, String(ambientTemp)); 
+        streamHASS(TOPIC_TH, String(mqttCount));
+        streamHASS(TOPIC_MF, String(mqttFailCount));
+        client.disconnect();
+        } else {
+          Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
+          mqttFailCount++;
+        }
     }
     wd->checkin(); //reset application watchdog timer count
 }
@@ -297,6 +303,22 @@ void tellHASS (const char *ha_topic, String ha_payload) {
   if(client.isConnected()) {
     client.publish(ha_topic, ha_payload);
     client.disconnect();
+  } else {
+    Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
+    mqttFailCount++;
+  }
+}
+
+//
+// send  messages via an already-open connection
+//
+
+void streamHASS(const char *ha_topic, String ha_payload) {
+
+  mqttCount++;
+  delay(100); // take it easy on the server
+  if(client.isConnected()) {
+    client.publish(ha_topic, ha_payload);
   } else {
     Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
     mqttFailCount++;
