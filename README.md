@@ -1,5 +1,5 @@
 # UtilWatch2020
-Fresh version of a [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with
+A [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring system, [Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch), this one using MQTT to connect with
 the (fabulous open source) [Home Assistant (HASS)](https://www.home-assistant.io/).
 
 There are some tips for setting up webhooks/thingspeak at the
@@ -7,10 +7,12 @@ There are some tips for setting up webhooks/thingspeak at the
 
 ## Contents
 
-You can take src/UtilWatch2020.ino and paste into the Particle.io's
-[Web IDE](https://build.particle.io/build/) where you can then
-add the libraries (MQTT, OneWire, DS18B20). Then decide whether to use a secrets.h
-or paste template_secrets.h into your code, in either case filling in your particulars.
+If you are not doing much with Particle devices the quickest path is to copy/paste src/UtilWatch2020.ino
+into the Particle.io
+[Web IDE](https://build.particle.io/build/) and then
+add the libraries (MQTT, OneWire, DS18B20). You can use a secrets.h file 
+(see src/template_secrets.h) or copy/paste template_secrets.h into your code.
+In either case you need to fill in your particulars.
 
 **DEV/** - device info - what hardware I use for the different sensors.
 
