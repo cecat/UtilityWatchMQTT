@@ -15,6 +15,9 @@ In either case you need to fill in your particulars.
 
 **topics.h** - If you have lots of topics this keeps them from cluttering your code.
 
+**ThingSpeakReport.h** - This is code you can use if you prefer to send your data to ThingSpeak.com
+(An alternative if you just want to monitor things and don't run HASS).
+
 ## Change log
 
 *12-October-2020:* Monitor home utilities (sump pump, hvac, water heater...) using a Particle Photon.
