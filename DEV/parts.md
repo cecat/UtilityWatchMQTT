@@ -16,23 +16,20 @@ That means either soldering wires to terminals or putting connectors on them.
 $20 [Particle Photon (WiFi)](https://store.particle.io/collections/wifi/products/photon)
 (buy with headers so you can plug into a breadboard)
 
-##Old School##
+$18 [Grove Photon Shield](https://www.amazon.com/gp/product/B071LCPX7P/ref=ppx_yo_dt_b_search_asin_title)
 
-$10 [Small breadboard](https://www.amazon.com/DEYUE-breadboard-Set-Prototype-Board/dp/B07LFD4LT6/ref=sr_1_3?dchild=1&keywords=small+breadboard&qid=1602615796&sr=8-3)
-(they are actually about $1-2 but not sold individually so you would typically buy a handful)
+You can go with pre-packaged Grove sensors but typically the grove connectors are only a few inches long
+One way or another you need to make longer wires to reach your furnace, sump pump, water heater, etc. 
+That being the case, you'll solder the sensors below to grove 4-wire connectors.
 
-For the above, you might also consider a [kit like this](https://www.verical.com/pd/particle-industries-----misc-kits-and-tools-photonkit-3439409) that includes Photon and breadboard)
-
-$9 [OneWire Temperature Sensor](https://www.amazon.com/DS18B20-Temperature-Waterproof-Stainless-Raspberry/dp/B087JQ6MCP/ref=sr_1_3?dchild=1&keywords=ds18b20&qid=1602616146&sr=8-3) - this one includes a little breakout board with the pull-up resistor so is an easy on ramp.  The sensors themselves are $5-6 (cheaper for just the sensor without the wire or waterproof packaging) 
-but they are typically [not sold individually](https://www.amazon.com/Gikfun-DS18B20-Temperature-Waterproof-EK1083x3/dp/B012C597T0/ref=sr_1_5?dchild=1&keywords=ds18b20&qid=1602363368&sr=8-5). 
+$13 [OneWire Temperature Sensor](https://www.amazon.com/IZOKEE-Temperature-Stainless-Waterproof-Resistor/dp/B082WVWC3T/ref=sr_1_4). 
+This one includes pull-up resistors so is an easy on-ramp.
+The sensors themselves are $5-6 (cheaper for just the sensor without the wire or waterproof packaging) 
+but they are not typically sold individually.
 
 $16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/).
 This is pretty expensive as sensors go but it's convenient in that
-you just zip-tie to the wire, no cutting into dangerous AC wiring..
-There are lower cost sensors that clamp on [like these](https://www.amazon.com/SCT-013-000-Non-invasive-Current-Sensor-Transformer/dp/B07FZZZ62L/ref=sr_1_4?dchild=1&keywords=Current+Sensor&qid=1602619691&sr=8-4)
-that are worth a try, but for this project I would avoid any that require you to
-(cut the wire and) place them in-line like [these](https://www.amazon.com/Gikfun-Current-Sensor-Arduino-EK1181x2/dp/B00RBHOLUU/ref=sr_1_3?dchild=1&keywords=Current+Sensor&qid=1602619691&sr=8-3).
+you just zip-tie to the wire, no cutting into dangerous AC wiring.
 
-$6 [3.3v power supply](https://www.amazon.com/3-3V-Adapter-Power-5-5-2-1/dp/B07BGW2VXV/ref=sr_1_3?dchild=1&keywords=3.3v+power+supply&qid=1602616592&sr=8-3) if your furnace has an outlet that only activates when the fan is on (saving you having to build a step-down circuit or use a voltage regulator).
-
+$6 [3.3v power supply](https://www.amazon.com/3-3V-Adapter-Power-5-5-2-1/dp/B07BGW2VXV/ref=sr_1_3) if your furnace has an outlet that only activates when the fan is on (saving you having to build a step-down circuit or use a voltage regulator).
 
