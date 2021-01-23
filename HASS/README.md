@@ -3,7 +3,7 @@
 ## MQTT
 Add and set up MQTT Mosquitto broker MQTT integration in HA following its
 [documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
-This will include creating an MQTT username and password. These will go into the secrets.h
+This will include creating an MQTT username and password--these will go into the secrets.h
 file (see the repo top level README.md) or alternately can be plugged into the designated
 spots in the code.  You'll also specify your HA instance (i.e. the MQTT broker) by
 hostname or IP address.  If the latter, make a DNS reservation for your HA server
