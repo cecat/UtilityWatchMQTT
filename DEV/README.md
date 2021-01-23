@@ -49,7 +49,7 @@ you can of course use that.
 
 ## Connecting to the Photon
 
-You can see in the src/UtilWatch2020.ino code that I have the sensor data pins connected to pins d0, a0, and a1 (obviously you can use whatever you want, just make sure these #define lines match):
+You can see in *src/UtilWatch2020.ino* that you need to specify pin assignments:
 
 ```
 // sensor pins (what pins on the Photon go to what sensors)
@@ -58,6 +58,6 @@ You can see in the src/UtilWatch2020.ino code that I have the sensor data pins c
 #define sumpPin     A4                      // pin for sump pump current sensor
 ```
 
-If you wire directly or use the Grove shield just make sure you update the pin assignments to the ones 
+Whether you wire directly or use the Grove shield just make sure you update the pin assignments to the ones 
 you select.
 
