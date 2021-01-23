@@ -27,7 +27,7 @@ This one includes pull-up resistors so is an easy on-ramp.
 The sensors themselves are $5-6 (cheaper for just the sensor without the wire or waterproof packaging) 
 but they are not typically sold individually.
 
-$16 Hall Effect current sensor- [ModernDevice](https://moderndevice.com/product/current-sensor/).
+$16 [Hall Effect current sensor](https://moderndevice.com/product/current-sensor/).
 This is pretty expensive as sensors go but it's convenient in that
 you just zip-tie to the wire, no cutting into dangerous AC wiring.
 
