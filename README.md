@@ -7,20 +7,10 @@ There are some tips for setting up webhooks/thingspeak at the
 
 ## Contents
 
-If you just take src/UtilWatch2020.ino and paste that code into the Particle.io's [Web IDE](https://build.particle.io/build/) where you can then
-add the libraries (MQTT, OneWire, DS18B20) and decide whether to use a secrets.h
-file or fill in mqtt username, password, and server info in the designated spot 
-(and comment out the #include line for secrets.h) in src/UtilWatch2020.ino.  The secrets.h
-file should look like this:
-
-```
-const char *HA_USR = "your mqtt username";
-const char *HA_PWD = "your mqtt passwd";
-// and use one of the following lines:
-//char MY_SERVER[] = "your.server.hostname"
-	// or using your IP address w.x.y.z
-byte MY_SERVER[] = { w, x, y, z };
-```
+You can take src/UtilWatch2020.ino and paste into the Particle.io's
+[Web IDE](https://build.particle.io/build/) where you can then
+add the libraries (MQTT, OneWire, DS18B20). Then decide whether to use a secrets.h
+or paste template_secrets.h into your code, in either case filling in your particulars.
 
 **DEV/** - device info - what hardware I use for the different sensors.
 
@@ -39,14 +29,7 @@ It uses MQTT to send data to Home Assistant. Using QoS=0 (i.e., none) is simples
 to work fine unless you are trying to send from a cellular-connected Electron with weak signal
 (where I've had a bit of trouble with lost messages).
 
-14-December-2020
+*14-December-2020:* The code has been simplified, removing lots of delays and debug assist code. The long list of mqtt topics is now pushed out to topics.h. Added template_secrets.h for mqtt user/passwd/server info.
+Code to use Particle's Webhooks to graph things at Thingspeak.com removed; saved in the src directory for future use.
 
-The code has been simplified, removing lots of delays and debug assist code.
-
-The long list of mqtt topics is now pushed out to topics.h.
-
-The commented out code for embedding mqtt username, password, and server is gone (clutter) and a template for your secret.h is included - put your info there and rename it secrets.h
-
-The code to use Particle's Webhooks to graph things at Thingspeak.com as 
-the previous version did has been pulled out but saved in the src directory for future use.
-
+*23-Jan-2021:* Fixed intermittent wedging triggered in tellHASS(). Photon will wedge if you try to publish after client.connect fails.
