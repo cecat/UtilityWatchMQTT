@@ -7,6 +7,14 @@ You can use a secrets.h file
 (see *template_secrets.h*) or copy/paste *template_secrets.h* into your code.
 In either case you need to fill in your particulars.
 
+## Contents
+
+**UtilWatch2020.ino** - Sketch that runs on the Photon.
+
+**template_secrets.h** - Use to create a *secrets.h* file to hold your mqtt username, password, server address.
+
+**topics.h** - If you have lots of topics this keeps them from cluttering your code.
+
 ## Change log
 
 *12-October-2020:* Monitor home utilities (sump pump, hvac, water heater...) using a Particle Photon.
