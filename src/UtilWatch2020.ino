@@ -21,13 +21,6 @@
 // our mqtt topics (must also define in hass configuration.yaml)
 #include "topics.h"
 
-retained bool    DOGGED  = FALSE; // did watchdog rest me?
-ApplicationWatchdog *wd;
-void watchdogHandler(){
-    DOGGED = TRUE;
-    System.reset(RESET_NO_WAIT);
-}
-
 // sensor pins (what pins on the Photon go to what sensors)
 #define waterPin    D2                      // pin for ds18b20-A to water heater chimney
 #define hvacPin     A0                      // pin for HVAC fan current sensor
@@ -109,10 +102,6 @@ void setup() {
     mqttFailCount = 0;
     mqttCount = 0;
 
-    if (DOGGED) { // hmmm, the application watchdog reset us
-       Particle.publish("DOGGIES", "App Watchdog Reset", PRIVATE);
-       DOGGED = FALSE;
-    }
     for (int i=0; i<SMAX; i++) sumpRuns[i] = millis()-dutyWindow; // make sump run records >>30 min ago
     // set timers
     sumpTimer.start();
@@ -122,8 +111,6 @@ void setup() {
     client.connect(CLIENT_NAME, HA_USR, HA_PWD);
     if (client.isConnected()) { Particle.publish("MQTT", "Connected to HA", 3600, PRIVATE);
     } else {  Particle.publish("MQTT", "Failed to connect to HA - check IP address", 3600, PRIVATE); }
-
-    wd = new ApplicationWatchdog(60000, watchdogHandler, 1536);
 }
 /*
  All the action (checking sensors, tracking duty cycles) happens via interrupts so 
@@ -139,27 +126,26 @@ void loop() {
         lastMQTT = millis();
       client.connect(CLIENT_NAME, HA_USR, HA_PWD);
       if (client.isConnected()) {
-        if (sumpOn)     { streamHASS(TOPIC_A, String(sumpCur)); }
-                  else  { streamHASS(TOPIC_B, String(sumpCur)); }
-        if (hvacOn)     { streamHASS(TOPIC_C, String(hvacCur)); }
-                  else  { streamHASS(TOPIC_D, String(hvacCur)); }
-        if (heaterOn)   { streamHASS(TOPIC_E, String(waterTemp)); }
-                  else  { streamHASS(TOPIC_F, String(waterTemp)); }
+        if (sumpOn)     { tellHASS(TOPIC_A, String(sumpCur)); }
+                  else  { tellHASS(TOPIC_B, String(sumpCur)); }
+        if (hvacOn)     { tellHASS(TOPIC_C, String(hvacCur)); }
+                  else  { tellHASS(TOPIC_D, String(hvacCur)); }
+        if (heaterOn)   { tellHASS(TOPIC_E, String(waterTemp)); }
+                  else  { tellHASS(TOPIC_F, String(waterTemp)); }
                               
-        streamHASS(TOPIC_H, String(runCount));  
-        streamHASS(TOPIC_I, String(sumpCur));    
-        streamHASS(TOPIC_J, String(hvacCur));    
-        streamHASS(TOPIC_K, String(waterTemp));  
-        streamHASS(TOPIC_N, String(ambientTemp)); 
-        streamHASS(TOPIC_TH, String(mqttCount));
-        streamHASS(TOPIC_MF, String(mqttFailCount));
+        tellHASS(TOPIC_H, String(runCount));  
+        tellHASS(TOPIC_I, String(sumpCur));    
+        tellHASS(TOPIC_J, String(hvacCur));    
+        tellHASS(TOPIC_K, String(waterTemp));  
+        tellHASS(TOPIC_N, String(ambientTemp)); 
+        tellHASS(TOPIC_TH, String(mqttCount));
+        tellHASS(TOPIC_MF, String(mqttFailCount));
         client.disconnect();
         } else {
           Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
           mqttFailCount++;
         }
     }
-    wd->checkin(); //reset application watchdog timer count
 }
 /************************************/
 /***        TIMER FUNCTIONS       ***/
@@ -295,25 +281,8 @@ double getAmbientTemp() {  // using example code from the DS18B20 library
 // due to oddly short connection timeouts (ignoring MQTT_KEEPALIVE afaict)
 // require recovery code
 
-void tellHASS (const char *ha_topic, String ha_payload) {
 
-  mqttCount++;
-  delay(100); // dunno if needed but just to slow the barrage
-  client.connect(CLIENT_NAME, HA_USR, HA_PWD);
-  if(client.isConnected()) {
-    client.publish(ha_topic, ha_payload);
-    client.disconnect();
-  } else {
-    Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
-    mqttFailCount++;
-  }
-}
-
-//
-// send  messages via an already-open connection
-//
-
-void streamHASS(const char *ha_topic, String ha_payload) {
+void tellHASS(const char *ha_topic, String ha_payload) {
 
   mqttCount++;
   delay(100); // take it easy on the server
