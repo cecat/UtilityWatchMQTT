@@ -4,10 +4,11 @@
 Add and set up *MQTT Mosquitto broker* integration in HASS following its
 [documentation](https://github.com/home-assistant/hassio-addons/blob/master/mosquitto/DOCS.md).
 This will include creating an MQTT *username* and *password* --- which will go into the secrets.h
-file (../README.md) or alternately the three lines can be put into UtilWatch2020.ino.
+file (../README.md) or alternately the contents of secrets.h can be put into UtilWatch2020.ino.
 There you also specify your HASS server (i.e. the MQTT broker) by
 hostname or IP address.  If the latter, make a DNS reservation for your HASS server
-so it always gets the same IP address.)
+so it always gets the same IP address. Finally, for each device you want to connect to HASS
+you need to have a unique CLIENT_NAME or the broker will get confused.
 
 ## TOPICS and Automation
 
