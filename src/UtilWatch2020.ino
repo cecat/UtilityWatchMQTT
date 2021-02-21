@@ -3,7 +3,7 @@
  * Description: Fresh implementation of utility watch using MQTT and targeting Home Assistant
  * Author: C. Catlett
  * Date: October 2020
- * Last major update January 2021
+ * Last major update February 2021
  * 
  * This code watches several sensors and periodically sends values to both Home Assistant and to
  * a nice free graphing site, ThingSpeak.com.  For the latter you have to set up webhooks in
@@ -85,7 +85,6 @@ void setup() {
     client.connect(CLIENT_NAME, HA_USR, HA_PWD); //see secrets.h
     if (client.isConnected()) { Particle.publish("MQTT", "Connected to HA", 3600, PRIVATE);
     } else {  Particle.publish("MQTT", "Failed connect HA - check secrets.h", 3600, PRIVATE); }
-    //client.disconnect();
 }
 /*
  All the action (checking sensors, tracking duty cycles) happens via interrupts so 
@@ -95,9 +94,6 @@ void setup() {
  
 void loop() {
 
-    // Report to HA via MQTT
-    //if ((millis() - lastMQTT) > mqttFreq) {
-    //  lastMQTT = millis();
     if (reportNow) {
       reportNow = FALSE;
       wd->checkin();
@@ -123,7 +119,6 @@ void loop() {
         tellHASS(TOPIC_N, String(ambientTemp)); 
         tellHASS(TOPIC_TH, String(mqttCount));
         tellHASS(TOPIC_MF, String(mqttFailCount));
-        //client.disconnect();
         } else {
           Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
           mqttFailCount++;
@@ -267,11 +262,8 @@ double getAmbientTemp() {  // using example code from the DS18B20 library
   return (fahrenheit); // F, because this is Amurica
 }
 
-//
-// put the mqtt stuff in one place since the error detect/correct
-// due to oddly short connection timeouts (ignoring MQTT_KEEPALIVE afaict)
-// require recovery code
 
+// mqtt comms
 
 void tellHASS(const char *ha_topic, String ha_payload) {
 
