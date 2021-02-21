@@ -17,22 +17,12 @@
 
 // secrets.h file to hold username, password, and servername or IP address
 #include "secrets.h"
-
+// bunch of variables we use, pin assignments, etc.
+#include "vars.h"
 // our mqtt topics (must also define in hass configuration.yaml)
 #include "topics.h"
 
-// sensor pins (what pins on the Photon go to what sensors)
-#define waterPin    D2                      // pin for ds18b20-A to water heater chimney
-#define hvacPin     A0                      // pin for HVAC fan current sensor
-#define sumpPin     A4                      // pin for sump pump current sensor
-#define ambientPin  D4                      // another ds18b20 for ambient basement temperature
-#define MAXRETRY    4                       // max times to poll temperature pin before giving up
-DS18B20  sensor(waterPin, true);            // water heater
-DS18B20 ambient(ambientPin, true);          // ambient temp
-
-/*
- * MQTT 
- */
+// MQTT 
 #define MQTT_KEEPALIVE 30 * 60              //  sec 
 // MQTT functions
 void timer_callback_send_mqqt_data();    
@@ -44,60 +34,24 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
      Particle.publish("mqtt", p, 3600, PRIVATE);
  }
 MQTT client(MY_SERVER, 1883, MQTT_KEEPALIVE, mqtt_callback);
+
+// failsafe and housekeeping stuff
+
 retained int mqttFailCount  = 0; // keep track of mqtt reliability
 retained int mqttCount      = 0;
 retained bool REBORN        = FALSE; // did application watchdog revive us?
-
-// global constant parameters
-int     WINDOW          = 900000;           // check to see if sump is in danger every 15 minutes
-int     PUMP_ON         = 100;              // need to calibrate - resting state ~40-50 for my sump pump
-int     FLAME_ON        = 190;              // same here - your chimney temp may vary 
-int     MOTOR_ON        = 2500;             // is hvac running?
-// timer intervals
-int     sumpCheckFreq   = 2003;             // check sump every ~2 seconds since it typically runs only for 20s or so
-int     allCheckFreq    = 17351;            // check hvac and water heater less often as they have longer duty cycles
-double  mqttFreq        = 300007;           // report vars to HASS via MQTT every ~5 minutes
-bool    reportNow       = TRUE;             // time to report yet?
-// keep track of how mqtt is doing seeing as we ain't using QoS
-double  lastMQTT        = 0;
-int     reportCount     = 0;
-// global variables
-bool    sumpOn          = false;            // state variables
-bool    hvacOn          = false;
-bool    heaterOn        = false;
-int     sumpCur         = 0;                // sensor values
-int     hvacCur         = 0;
-double  waterTemp       = 70;
-double  lastTemp        = 70;
-double  ambientTemp     = 60;
-String  tString;                            // string buffer to hold timestamp
-// statistics variables
-bool    sumpEvent       = false;
-bool    hvacEvent       = false;
-int     sumpStart       = 0;                // start time of sump event
-int     sumpDuration    = 0;                // duration of sump event
-int     hvacStart       = 0;                // start time of hvac event
-int     hvacDuration    = 0;                // duration of hvac event
-// sump duty cycle variables
-#define DANGER		        6		              // number of times sump runs in 30 min before I worry
-#define SMAX              16                // maximum we might ever see the sump run in a window
-int     sumpRuns        [SMAX];             // keep track of how many time sump runs in a given window of time
-double  dutyWindow      = 1800000;          // set the sump duty cycle of interest window to 30 minutes
-int     dutyPtr         = 0;                // pointer into dutyWindow array
-int     runCount        = 0;                // sump runcount past WINDOW ms
-
-// interrupt timers
-Timer sumpTimer(sumpCheckFreq, checkSump);  // every checkFreq ms check the sump current
-Timer allTimer(allCheckFreq,    checkAll);  // every allCheckFreq ms check the others
-Timer alertTimer(WINDOW, siren);            // let's blow the wistle every 15 min if needed
-Timer reportTimer(mqttFreq, timeToReport);     // report via MQTT
-
 // Application watchdog - sometimes MQTT wedges things
 ApplicationWatchdog *wd;
 void watchdogHandler() {
   REBORN = TRUE;
   System.reset(RESET_NO_WAIT);
 }
+
+// interrupt timers
+Timer sumpTimer(sumpCheckFreq, checkSump);  // every checkFreq ms check the sump current
+Timer allTimer(allCheckFreq,    checkAll);  // every allCheckFreq ms check the others
+Timer alertTimer(WINDOW, siren);            // let's blow the wistle every 15 min if needed
+Timer reportTimer(mqttFreq, timeToReport);     // report via MQTT
 
 /* ********************************************************************************* */
 
@@ -107,7 +61,6 @@ void setup() {
     pinMode(sumpPin,    INPUT);
     pinMode(hvacPin,    INPUT);
     pinMode(waterPin,   INPUT);
-    Serial.begin      (115200);
         
     wd = new ApplicationWatchdog(60000, watchdogHandler, 1536); // restart after 60s no pulse
 
@@ -116,7 +69,7 @@ void setup() {
       REBORN = FALSE;
     }
 
-    Particle.publish("MQTT", String("Fail rate " + String(mqttFailCount) + "/" + String(mqttCount)),3600, PRIVATE);
+    Particle.publish("MQTT", String("Previous Fail rate " + String(mqttFailCount) + "/" + String(mqttCount)),3600, PRIVATE);
     mqttFailCount = 0;
     mqttCount = 0;
     delay(1000);
@@ -132,7 +85,7 @@ void setup() {
     client.connect(CLIENT_NAME, HA_USR, HA_PWD); //see secrets.h
     if (client.isConnected()) { Particle.publish("MQTT", "Connected to HA", 3600, PRIVATE);
     } else {  Particle.publish("MQTT", "Failed connect HA - check secrets.h", 3600, PRIVATE); }
-    client.disconnect();
+    //client.disconnect();
 }
 /*
  All the action (checking sensors, tracking duty cycles) happens via interrupts so 
@@ -151,7 +104,7 @@ void loop() {
       if (client.isConnected()) {
     //    Particle.publish("mqtt", "connected OK", 3600, PRIVATE); delay(100);
         } else { 
-    //      Particle.publish("mqtt", "reconnecting", 3600, PRIVATE); delay(100);
+          Particle.publish("mqtt", "reconnecting", 3600, PRIVATE); delay(100);
           client.connect(CLIENT_NAME, HA_USR, HA_PWD);
         }
 
@@ -170,7 +123,7 @@ void loop() {
         tellHASS(TOPIC_N, String(ambientTemp)); 
         tellHASS(TOPIC_TH, String(mqttCount));
         tellHASS(TOPIC_MF, String(mqttFailCount));
-        client.disconnect();
+        //client.disconnect();
         } else {
           Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
           mqttFailCount++;
@@ -262,9 +215,9 @@ void siren(){
     tString = Time.timeStr();  // update the exposed variable (date-time stamp)
     if (runCount > DANGER) {
         Particle.publish("Danger", "sump", PRIVATE);
-        client.publish(TOPIC_L, tString);
+        tellHASS(TOPIC_L, tString);
     } else {
-        client.publish(TOPIC_M, tString);
+        tellHASS(TOPIC_M, tString);
     }
 }
 
