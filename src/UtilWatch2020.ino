@@ -105,15 +105,15 @@ void loop() {
         }
 
       if (client.isConnected()){
-        if (sumpOn)     { tellHASS(TOPIC_A, String(sumpCur)); }
-                  else  { tellHASS(TOPIC_B, String(sumpCur)); }
+        //if (sumpOn)     { tellHASS(TOPIC_A, String(sumpCur)); }
+        //          else  { tellHASS(TOPIC_B, String(sumpCur)); }
         if (hvacOn)     { tellHASS(TOPIC_C, String(hvacCur)); }
                   else  { tellHASS(TOPIC_D, String(hvacCur)); }
         if (heaterOn)   { tellHASS(TOPIC_E, String(waterTemp)); }
                   else  { tellHASS(TOPIC_F, String(waterTemp)); }
                               
         tellHASS(TOPIC_H, String(runCount));  
-        tellHASS(TOPIC_I, String(sumpCur));    
+        //tellHASS(TOPIC_I, String(sumpCur));    
         tellHASS(TOPIC_J, String(hvacCur));    
         tellHASS(TOPIC_K, String(waterTemp));  
         tellHASS(TOPIC_N, String(ambientTemp)); 
@@ -146,6 +146,8 @@ void checkSump () {
         if (!sumpOn) {
             //sumpEvent = true;
             sumpStart = millis();
+            tellHASS(TOPIC_A, String(sumpCur)); 
+            tellHASS(TOPIC_I, String(sumpCur));   
         }
         sumpOn = true;
     } else {
@@ -154,8 +156,10 @@ void checkSump () {
             sumpDuration = (millis() - sumpStart)/1000;     // sump event duration in seconds
             sumpRuns[dutyPtr] = millis();                   // record the event in the duty cycle counter buffer
             dutyPtr = (dutyPtr + 1) % SMAX;                 // advance pointer in the circular cycle counter buffer
+            tellHASS(TOPIC_B, String(sumpCur));
+            tellHASS(TOPIC_I, String(sumpCur));   
+            sumpOn = false;
         }
-    sumpOn = false;
     runCount = 0;                                           // how many of the past SMAX runs are less than 
     if (millis() > dutyWindow) {
       for (int i=0; i<SMAX; i++)                              // dutyWindow ms prior to now?
