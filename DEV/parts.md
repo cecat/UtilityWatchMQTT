@@ -16,7 +16,7 @@ That means either soldering wires to terminals or putting connectors on them.
 $20 [Particle Photon (WiFi)](https://store.particle.io/collections/wifi/products/photon)
 (buy with headers so you can plug into a breadboard)
 
-$18 [Grove Photon Shield](https://www.amazon.com/gp/product/B071LCPX7P/ref=ppx_yo_dt_b_search_asin_title)
+$7 [Grove Photon Shield](https://www.seeedstudio.com/Particle-Photon-Base-Shield.html)
 
 You can go with pre-packaged Grove sensors but typically the grove connectors are only a few inches long
 One way or another you need to make longer wires to reach your furnace, sump pump, water heater, etc. 
