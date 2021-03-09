@@ -5,22 +5,22 @@
  * Date: October 2020
  * Last major update February 2021
  * 
- * This code watches several sensors and periodically sends values to both Home Assistant and to
- * a nice free graphing site, ThingSpeak.com.  For the latter you have to set up webhooks in
- * the Particle.io cloud. 
+ * This code watches several sensors and periodically sends values to Home Assistant using MQTT
  */
 
-#include <MQTT.h>
-#include <OneWire.h>
 #include <DS18B20.h>
 #include "math.h"
+#include <MQTT.h>
+#include <OneWire.h>
+
 
 // secrets.h file to hold username, password, and servername or IP address
 #include "secrets.h"
-// bunch of variables we use, pin assignments, etc.
-#include "vars.h"
 // our mqtt topics (must also define in hass configuration.yaml)
 #include "topics.h"
+// bunch of variables we use, pin assignments, etc.
+#include "vars.h"
+
 
 // MQTT 
 #define MQTT_KEEPALIVE 30 * 60              //  sec 
@@ -37,9 +37,9 @@ MQTT client(MY_SERVER, 1883, MQTT_KEEPALIVE, mqtt_callback);
 
 // failsafe and housekeeping stuff
 
-retained int mqttFailCount  = 0; // keep track of mqtt reliability
-retained int mqttCount      = 0;
-retained bool REBORN        = FALSE; // did application watchdog revive us?
+retained int  mqttFailCount  = 0; // keep track of mqtt reliability
+retained int  mqttCount      = 0;
+retained bool REBORN         = FALSE; // did application watchdog revive us?
 // Application watchdog - sometimes MQTT wedges things
 ApplicationWatchdog *wd;
 void watchdogHandler() {
@@ -48,10 +48,10 @@ void watchdogHandler() {
 }
 
 // interrupt timers
-Timer sumpTimer(sumpCheckFreq, checkSump);  // every checkFreq ms check the sump current
-Timer allTimer(allCheckFreq,    checkAll);  // every allCheckFreq ms check the others
-Timer alertTimer(WINDOW, siren);            // let's blow the wistle every 15 min if needed
-Timer reportTimer(mqttFreq, timeToReport);     // report via MQTT
+Timer sumpTimer   (sumpCheckFreq, checkSump);   // every checkFreq ms check the sump current
+Timer allTimer    (allCheckFreq,    checkAll);  // every allCheckFreq ms check the others
+Timer alertTimer  (WINDOW, siren);              // let's blow the wistle every 15 min if needed
+Timer reportTimer (mqttFreq, timeToReport);     // report via MQTT
 
 /* ********************************************************************************* */
 
@@ -76,20 +76,19 @@ void setup() {
 
     for (int i=0; i<SMAX; i++) sumpRuns[i] = millis()-dutyWindow; // make sump run records >>30 min ago
     // set timers
-    sumpTimer.start();
-    allTimer.start();
     alertTimer.start();
+    allTimer.start();
     reportTimer.start();
+    sumpTimer.start();
 
     // make sure mqtt is working
     client.connect(CLIENT_NAME, HA_USR, HA_PWD); //see secrets.h
     if (client.isConnected()) { Particle.publish("MQTT", "Connected to HA", 3600, PRIVATE);
-    } else {  Particle.publish("MQTT", "Failed connect HA - check secrets.h", 3600, PRIVATE); }
+      } else {  Particle.publish("MQTT", "Failed connect HA - check secrets.h", 3600, PRIVATE); }
 }
 /*
  All the action (checking sensors, tracking duty cycles) happens via interrupts so 
- we just spinwait until it's time to report and since ThingSpeak has throttles we just 
- report one thing at a time.  So checking stuff and reporting it are totally decoupled. 
+ we just spinwait until it's time to report.  So checking and reporting are totally decoupled. 
  */
  
 void loop() {
@@ -113,7 +112,7 @@ void loop() {
                   else  { tellHASS(TOPIC_F, String(waterTemp)); }
                               
         tellHASS(TOPIC_H, String(runCount));  
-        //tellHASS(TOPIC_I, String(sumpCur));    
+        tellHASS(TOPIC_I, String(sumpCur));    
         tellHASS(TOPIC_J, String(hvacCur));    
         tellHASS(TOPIC_K, String(waterTemp));  
         tellHASS(TOPIC_N, String(ambientTemp)); 
@@ -270,10 +269,11 @@ double getAmbientTemp() {  // using example code from the DS18B20 library
 // mqtt comms
 
 void tellHASS(const char *ha_topic, String ha_payload) {
-
+  int returnCode = 0;
   delay(100); // take it easy on the server
   if(client.isConnected()) {
-    client.publish(ha_topic, ha_payload);
+    returnCode = client.publish(ha_topic, ha_payload);
+    if (returnCode != 1) Particle.publish("mqtt return code = ", String(returnCode), 3600, PRIVATE);
     mqttCount++;
   } else {
     Particle.publish("mqtt", "Connection dropped", 3600, PRIVATE);
