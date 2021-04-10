@@ -99,6 +99,7 @@ void loop() {
       if (client.isConnected()) {
     //    Particle.publish("mqtt", "connected OK", 3600, PRIVATE); delay(100);
         } else { 
+          delay(1000);
           Particle.publish("mqtt", "reconnecting", 3600, PRIVATE); delay(100);
           client.connect(CLIENT_NAME, HA_USR, HA_PWD);
         }
@@ -119,9 +120,11 @@ void loop() {
         tellHASS(TOPIC_TH, String(mqttCount));
         tellHASS(TOPIC_MF, String(mqttFailCount));
         } else {
+          delay(1000);
           Particle.publish("mqtt", "Failed to connect", 3600, PRIVATE);
           mqttFailCount++;
         }
+      delay(1000);
       Particle.publish("MQTT", String("Fail rate " + String(mqttFailCount) + "/" + String(mqttCount)),3600, PRIVATE);
       void myWatchdogHandler(void); // reset the dog
     }
@@ -212,6 +215,7 @@ void siren(){
     Time.format(time, TIME_FORMAT_DEFAULT); // format the string
     tString = Time.timeStr();  // update the exposed variable (date-time stamp)
     if (runCount > DANGER) {
+        delay(1000);
         Particle.publish("Danger", "sump", PRIVATE);
         tellHASS(TOPIC_L, tString);
     } else {
@@ -273,9 +277,13 @@ void tellHASS(const char *ha_topic, String ha_payload) {
   delay(100); // take it easy on the server
   if(client.isConnected()) {
     returnCode = client.publish(ha_topic, ha_payload);
-    if (returnCode != 1) Particle.publish("mqtt return code = ", String(returnCode), 3600, PRIVATE);
-    mqttCount++;
+    if (returnCode != 1) {
+      delay(1000);
+      Particle.publish("mqtt return code = ", String(returnCode), 3600, PRIVATE);
+      client.disconnect();
+    } else mqttCount++;
   } else {
+    delay(1000);
     Particle.publish("mqtt", "Connection dropped", 3600, PRIVATE);
     client.connect(CLIENT_NAME, HA_USR, HA_PWD);
     client.publish(ha_topic, ha_payload);
