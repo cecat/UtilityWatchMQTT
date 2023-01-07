@@ -16,7 +16,7 @@ int     MOTOR_ON        = 2500;             // is hvac running?
 // timer intervals
 int     sumpCheckFreq   = 2003;             // check sump every ~2 seconds since it typically runs only for 20s or so
 int     allCheckFreq    = 17351;            // check hvac and water heater less often as they have longer duty cycles
-double  mqttFreq        = 300007;           // report vars to HASS via MQTT every ~5 minutes
+double  mqttFreq        = 120007;           // report vars to HASS via MQTT every ~2 minutes
 bool    reportNow       = TRUE;             // time to report yet?
 
 // keep track of how mqtt is doing seeing as we ain't using QoS

@@ -4,6 +4,9 @@
  * Author: C. Catlett
  * Date: October 2020
  * Last major update February 2021
+ * Update 9/7/22 new hvac system doesn't have a handy AC outlet that is on only when system is on, so 
+ * Removing relevant hvac monitoring code for the moment. (lines 201, 112-114, 180-195)
+ * Also commented out lines 208-211 which were incorrect
  * 
  * This code watches several sensors and periodically sends values to Home Assistant using MQTT
  */
@@ -105,16 +108,19 @@ void loop() {
         }
 
       if (client.isConnected()){
+        //Particle.publish("DEBUG", "firing multiple mqtt", 3600, PRIVATE); delay(100);
         //if (sumpOn)     { tellHASS(TOPIC_A, String(sumpCur)); }
         //          else  { tellHASS(TOPIC_B, String(sumpCur)); }
+/* rm hvac for now
         if (hvacOn)     { tellHASS(TOPIC_C, String(hvacCur)); }
-                  else  { tellHASS(TOPIC_D, String(hvacCur)); }
+                  else  { tellHASS(TOPIC_D, String(hvacCur)); } */
         if (heaterOn)   { tellHASS(TOPIC_E, String(waterTemp)); }
                   else  { tellHASS(TOPIC_F, String(waterTemp)); }
                               
         tellHASS(TOPIC_H, String(runCount));  
         tellHASS(TOPIC_I, String(sumpCur));    
-        tellHASS(TOPIC_J, String(hvacCur));    
+/* rm hvac for now
+        tellHASS(TOPIC_J, String(hvacCur));    */
         tellHASS(TOPIC_K, String(waterTemp));  
         tellHASS(TOPIC_N, String(ambientTemp)); 
         tellHASS(TOPIC_TH, String(mqttCount));
@@ -173,7 +179,8 @@ void checkSump () {
 // timed check of HVAC and water heater 
 //
 void checkAll () {    
-    // hvac
+   /* disable hvac after new system installed
+   // hvac
     hvacCur = analogRead(hvacPin);
     if (hvacCur > MOTOR_ON) {
         if (!hvacOn) {
@@ -187,7 +194,7 @@ void checkAll () {
             hvacDuration = (millis() - hvacStart)/60000;     // hvac event duration in minutes
         }
         hvacOn = false;
-    }
+    } */
     // water heater
     lastTemp  = waterTemp;
     waterTemp = getTemp();
@@ -198,10 +205,6 @@ void checkAll () {
         } 
         heaterOn = true;
     } else {
-       if (heaterOn) {
-            hvacEvent = true;
-            hvacDuration = (millis() - hvacStart)/60000;     // hvac event duration in minutes
-        } 
         heaterOn = false;
     }
     // basement temperature
@@ -286,7 +289,12 @@ void tellHASS(const char *ha_topic, String ha_payload) {
     delay(1000);
     Particle.publish("mqtt", "Connection dropped", 3600, PRIVATE);
     client.connect(CLIENT_NAME, HA_USR, HA_PWD);
-    client.publish(ha_topic, ha_payload);
-    mqttFailCount++;
+    returnCode = client.publish(ha_topic, ha_payload);
+    if (returnCode !=1) {
+      delay(500);
+      mqttFailCount++;
+    } else {
+      mqttCount++;
+    }
   }
 }
