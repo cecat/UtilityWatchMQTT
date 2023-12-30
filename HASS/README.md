@@ -90,4 +90,7 @@ unit: mA
 
 I mostly track on/off for these utilities so I get a nice timeline
 that tells me how often things are running (or not).  A history
-graph card works nicely for this in the dashboard.
+graph card works nicely for this in the dashboard.  For other sensors (e.g.,
+room or outdoor temperature) it's worth installing InfluxDB and Grafana
+(a nice primer is
+[here](https://www.youtube.com/watch?v=eJ-XE2tsD4U)). 
