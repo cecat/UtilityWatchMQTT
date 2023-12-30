@@ -42,7 +42,7 @@ When HASS receives a mqtt message with topic
 *myHome/kitchen/temp* it updates sensor.KitchenTemp
 with the payload you sent in the HASS message. Similarly for 
 an MQTT message with topic *myHome/DeLorean/fluxCapChg" the payload
-will be used to update the value of *sensor.FluxCapCharge."
+will be used to update the value of *sensor.FluxCapCharge*.
 (see *tellHASS()* routine in *src/UtilWatch2020.ino*).
 
 In the above example, the *scan_interval* and *unit_of_measurement* are
