@@ -6,3 +6,6 @@ lib/
 
 # loose lips...
 secrets.h
+
+# That pesky .cpp file
+src/UtilWatch2020.cpp
