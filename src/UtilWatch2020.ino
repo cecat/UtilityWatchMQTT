@@ -23,14 +23,9 @@
 #include "topics.h"
 // bunch of variables we use, pin assignments, etc.
 #include "vars.h"
-
 // So we can query the device to find out what code it's running
 #include "app_version.h"
-void setup() {
-    // ...
-    Particle.publish("app_version", APP_VERSION, PRIVATE);
-    // ...
-}
+const char* firmwareVersion = APP_VERSION;
 
 // MQTT 
 #define MQTT_KEEPALIVE 30 * 60              //  sec 
@@ -78,6 +73,8 @@ void setup() {
       Particle.publish("****WEDGED****", "app watchdog restart", 3600, PRIVATE);
       REBORN = FALSE;
     }
+    Particle.variable("fwVersion", firmwareVersion);
+    Particle.publish("app_version", APP_VERSION, PRIVATE);
 
     Particle.publish("MQTT", String("Previous Fail rate " + String(mqttFailCount) + "/" + String(mqttCount)),3600, PRIVATE);
     mqttFailCount = 0;
