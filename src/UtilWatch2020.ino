@@ -24,6 +24,13 @@
 // bunch of variables we use, pin assignments, etc.
 #include "vars.h"
 
+// So we can query the device to find out what code it's running
+#include "app_version.h"
+void setup() {
+    // ...
+    Particle.publish("app_version", APP_VERSION, PRIVATE);
+    // ...
+}
 
 // MQTT 
 #define MQTT_KEEPALIVE 30 * 60              //  sec 
