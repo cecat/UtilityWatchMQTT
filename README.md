@@ -4,8 +4,10 @@ A [Particle Photon](https://docs.particle.io/photon/)-based utility monitoring s
 the [Particle Electron](https://docs.particle.io/electron) (cellular) but you may wish to throttle
 back on the messaging frequency to manage cellular costs.
 
-There are some tips for setting up webhooks/thingspeak at the
-[Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo.
+A previous version of this code - in the
+[Photon-Util-Watch](https://github.com/cecat/Photon-Util-Watch) repo - used ThingSpeak as a
+dashboard, and tips can be found there if you are just looking for a dashboard rather than
+integrating into other systems.  This version uses MQTT to report to Home Assistant.
 
 ## Contents
 
