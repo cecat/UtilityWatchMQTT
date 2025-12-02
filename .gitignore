@@ -1,0 +1,8 @@
+# Ignore build folders, libraries, and common OS files
+.DS_Store
+target/
+.vscode/
+lib/
+
+# loose lips...
+secrets.h
