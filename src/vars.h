@@ -43,7 +43,7 @@ int     hvacStart       = 0;                // start time of hvac event
 int     hvacDuration    = 0;                // duration of hvac event
 
 // sump duty cycle variables
-#define DANGER		        6		              // number of times sump runs in 30 min before I worry
+#define DANGER		  10                // number of times sump runs in 30 min before I worry
 #define SMAX              16                // maximum we might ever see the sump run in a window
 int     sumpRuns        [SMAX];             // keep track of how many time sump runs in a given window of time
 double  dutyWindow      = 1800000;          // set the sump duty cycle of interest window to 30 minutes
