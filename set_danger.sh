@@ -8,7 +8,7 @@
 #
 # To find your device name: particle list
 
-DEVICE="your-device-name"   # <-- set this once (particle list to find it)
+DEVICE="cat_utils"
 
 if [ -z "$1" ]; then
     current=$(particle get "$DEVICE" danger 2>/dev/null)
