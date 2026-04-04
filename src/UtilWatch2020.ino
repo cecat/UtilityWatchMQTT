@@ -74,6 +74,8 @@ void setup() {
       REBORN = FALSE;
     }
     Particle.variable("fwVersion", firmwareVersion);
+    Particle.variable("danger",    DANGER);
+    Particle.function("setDanger", setDanger);
     Particle.publish("app_version", APP_VERSION, PRIVATE);
 
     Particle.publish("MQTT", String("Previous Fail rate " + String(mqttFailCount) + "/" + String(mqttCount)),3600, PRIVATE);
@@ -228,6 +230,22 @@ void siren(){
     } else {
         tellHASS(TOPIC_M, tString);
     }
+}
+
+/************************************/
+/***      PARTICLE FUNCTIONS      ***/
+/************************************/
+//
+// Update the DANGER threshold at runtime without reflashing.
+// Usage: particle call <device> setDanger <value>
+// Returns the new value, or -1 if the argument is invalid.
+//
+int setDanger(String args) {
+    int val = args.toInt();
+    if (val <= 0) return -1;
+    DANGER = val;
+    Particle.publish("setDanger", String(DANGER), PRIVATE);
+    return DANGER;
 }
 
 /************************************/
